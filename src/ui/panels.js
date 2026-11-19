@@ -266,7 +266,7 @@ export function createPanels(G, { addPanel, overlay, staged = false, query = new
   // ---- staging (ui=hud): frozen samples, so a shot shows them
   const ringStage = Number(query.get('ring'));
   if (sample) {
-    pushIt({ icon: 'ammo', text: '+36 rounds' }); pushIt({ icon: 'medkit', text: 'Medkit' });
+    pushIt({ icon: 'ammo', text: '탄약 +36발' }); pushIt({ icon: 'medkit', text: '구급상자' });
     const b = Number(query.get('banner'));
     if (b > 0) { bBig.textContent = String(b); bSmall.textContent = query.get('boss') ? '보스 라운드' : '라운드'; bannerEl.classList.add('on', 'still'); }
   }
