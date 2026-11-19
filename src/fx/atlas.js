@@ -550,9 +550,9 @@ export function createAtlases(post, opts = {}) {
     // share of the work done: compiles and cells count alike
     progress() { const all = S.programs + S.cells; return S.phase === 'done' || !all ? 1 : (S.compiled + S.drawn) / all; },
     label() {
-      if (S.phase === 'compiling') return `Preparing effects: compiling ${Math.min(S.compiled + (S.parallel ? 0 : 1), S.programs)} / ${S.programs}`;
-      if (S.phase === 'drawing') return `Preparing effects: drawing ${Math.min(S.drawn, S.cells)} / ${S.cells}`;
-      return 'Preparing effects';
+      if (S.phase === 'compiling') return `효과 준비 중: 컴파일 ${Math.min(S.compiled + (S.parallel ? 0 : 1), S.programs)} / ${S.programs}`;
+      if (S.phase === 'drawing') return `효과 준비 중: 그리기 ${Math.min(S.drawn, S.cells)} / ${S.cells}`;
+      return '효과 준비 중';
     },
     // after a context restore the targets exist again but are empty: draw them again
     rebake() { bakeNow(post, particles, 'particles', PARTICLE_FRAG); bakeNow(post, decals, 'decals', DECAL_FRAG); },
