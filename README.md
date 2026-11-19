@@ -11,6 +11,24 @@
 
 원작: https://github.com/ethanplusai/zombies · 라이브: https://zombies.ethanplus.ai
 
+## 스크린샷
+
+| 타이틀 | 플레이 HUD |
+| --- | --- |
+| ![타이틀 화면](screenshots/title.png) | ![플레이 HUD](screenshots/hud.png) |
+
+| 일시정지 | 라운드 종료 |
+| --- | --- |
+| ![일시정지 화면](screenshots/paused.png) | ![라운드 종료 화면](screenshots/dead.png) |
+
+| 설정 | 조작법 |
+| --- | --- |
+| ![설정 화면](screenshots/settings.png) | ![조작법 안내](screenshots/controls.png) |
+
+| 모바일 터치 HUD |
+| --- |
+| ![모바일 터치 HUD](screenshots/touch-hud.png) |
+
 ## 한글판 특징
 
 - 메뉴, HUD, 힌트, 목표 안내, 로딩 화면, 오류 메시지까지 게임 내 모든 인터페이스를 한국어로 옮겼습니다.
