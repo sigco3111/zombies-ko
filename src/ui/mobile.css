@@ -171,7 +171,7 @@
 
 /* stick: a faint ring where the thumb goes, a base and knob under the thumb while it is down */
 .gs-stick-idle { position: absolute; left: 0; top: 0; width: 112px; height: 112px; box-sizing: border-box; border-radius: 50%; border: 2px dashed rgba(236, 230, 214, .32); background: radial-gradient(circle, rgba(236, 230, 214, .07) 0 28%, transparent 30%); transition: opacity .15s; }
-.gs-stick-idle::after { content: 'MOVE'; position: absolute; inset: auto 0 -22px 0; text-align: center; font: 500 13px/1 var(--label); letter-spacing: .12em; color: rgba(236, 230, 214, .45); text-shadow: var(--shadow); }
+.gs-stick-idle::after { content: '이동'; position: absolute; inset: auto 0 -22px 0; text-align: center; font: 500 13px/1 var(--label); letter-spacing: .12em; color: rgba(236, 230, 214, .45); text-shadow: var(--shadow); }
 .gs-stick-idle.away { opacity: 0; }
 .gs-stick { position: absolute; left: 0; top: 0; width: 112px; height: 112px; box-sizing: border-box; border-radius: 50%; border: 2px solid rgba(236, 230, 214, .6); background: rgba(5, 7, 10, .4); opacity: 0; box-shadow: 0 0 0 1px rgba(0, 0, 0, .5); }
 .gs-stick.on { opacity: 1; }
