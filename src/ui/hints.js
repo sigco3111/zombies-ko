@@ -271,7 +271,7 @@ function mountExtras(G, hints) {
   let obj = null;
   guard('panels', () => createPanels(G, { addPanel, overlay, staged, query }));
   guard('objective', () => {
-    const sample = staged ? { text: 'Diner 여세요 \u2014 750', target: [30, -34] } : null;
+    const sample = staged ? { text: '식당 여세요 \u2014 750', target: [30, -34] } : null;
     obj = createObjectiveView(G, { sample, overlay, addPanel });
     return { update: (dt) => obj.update(dt, hints.target()) };
   });
