@@ -1,87 +1,80 @@
-# Graveyard Shift
+# 그레이브야드 시프트 (Graveyard Shift) 한글판
 
-A round-based zombies shooter that runs in the browser. You hold out at a roadside diner and gas station
-through the night: board up windows, earn points for every hit and kill, open new areas, buy weapons off
-the wall, search for loot and get the power back on, while each round sends more and tougher zombies.
-It plays with mouse and keyboard on a desktop and with touch controls on a phone.
+라운드제 좀비 슈터 **Graveyard Shift**의 한국어 번역판입니다. 밤새 길가 식당과 주유소를 지키며
+판자를 못 박고, 명중·처치마다 점수를 벌고, 새 구역을 열고, 벽에 걸린 무기를 사고, 전리품을 찾고,
+전원을 복구하세요. 라운드가 지날수록 좀비는 더 많고 더 강해집니다.
+데스크톱에서는 마우스와 키보드로, 휴대폰에서는 터치로 플레이할 수 있습니다.
 
-![Graveyard Shift](assets/keyart/og.jpg)
+![그레이브야드 시프트](assets/keyart/og.jpg)
 
-Play it: https://zombies.ethanplus.ai
+지금 플레이: **https://sigco3111.github.io/zombies-ko/**
 
-## How it works
+원작: https://github.com/ethanplusai/zombies · 라이브: https://zombies.ethanplus.ai
 
-- Rendered with [three.js](https://threejs.org) on WebGL2, with graphics tiers that adapt to the device.
-- Everything is generated in code when the page loads: models, textures, animation and the synthesised
-  audio. The only image files are the key art for the loading screen and the link preview.
-- esbuild bundles the game into a single self-contained HTML file, `dist/index.html`, which runs from
-  any static host or straight from disk.
-- The leaderboard and the "Report a problem" form are optional. They talk to a small Cloudflare Worker
-  with a D1 database in [`server/`](server/README.md), and are switched off unless the build is
-  configured for them (see Configuration).
+## 한글판 특징
 
-## Running it
+- 메뉴, HUD, 힌트, 목표 안내, 로딩 화면, 오류 메시지까지 게임 내 모든 인터페이스를 한국어로 옮겼습니다.
+- 제목 워드마크를 한글 디자인(Black Han Sans, Do Hyeon)으로 새로 잡았고, 본문에는 Noto Sans KR을 씁니다.
+- 총기 이름은 음차(렌 9, 홀리스 12, 콜더 556 …), 업그레이드 별명과 특전·파워업은 의미를 살려 번역했습니다.
+- 간판·번호판처럼 3D 장면에 질감으로 구워진 영문 글자는 원작의 분위기를 해치지 않도록 그대로 두었습니다.
+- 리더보드와 문제 신고 같은 온라인 기능은 원작과 같은 조건(별도 백엔드 설정)에서만 켜집니다.
 
-Needs Node.js 22 or later.
+## 실행하기
+
+Node.js 22 이상이 필요합니다.
 
 ```sh
-git clone https://github.com/ethanplusai/zombies.git
-cd zombies
+git clone https://github.com/sigco3111/zombies-ko.git
+cd zombies-ko
 npm install
-npm run build        # writes dist/index.html
+npm run build        # dist/index.html 생성
 ```
 
-Open `dist/index.html` in a browser. `npm run dev` rebuilds on every change.
+`dist/index.html`을 브라우저로 열면 바로 실행됩니다. `npm run dev`는 변경 때마다 다시 빌드합니다.
 
-Tests:
+테스트:
 
 ```sh
-npm test
+npm test             # Vitest 1546개
 ```
 
-The smoke and screenshot scripts (`npm run smoke`, `npm run smoke:mobile`, `npm run shot`) drive the built
-game in a headless browser and need Playwright's Chromium once:
+## 작동 방식
 
-```sh
-npx playwright install chromium
-```
+- [three.js](https://threejs.org) WebGL2 렌더링, 기기에 맞춰 화질 단계를 조절합니다.
+- 모델, 텍스처, 애니메이션, 합성 오디오까지 모두 페이지 로딩 때 코드로 생성합니다.
+  이미지 파일은 로딩 화면과 링크 미리보기용 키 아트뿐입니다.
+- esbuild가 게임 전체를 하나의 HTML 파일(`dist/index.html`)로 묶어 어떤 정적 호스트에서도,
+  심지어 디스크에서 바로 열어도 동작합니다.
+- 리더보드와 "문제 신고" 폼은 선택 사항으로, [`server/`](server/README.md)의 Cloudflare Worker +
+  D1 백엔드를 빌드에 설정(`GS_API_BASE`, `GS_ALLOWED_ORIGINS`)해야 켜집니다.
 
-## Project layout
+## 프로젝트 구조
 
-| Folder | What is in it |
+| 폴더 | 내용 |
 | --- | --- |
-| `src/audio/` | Synthesised sound effects, voices, ambience and music |
-| `src/core/` | Game loop, events, device detection, storage, seeded randomness, URL parameters |
-| `src/fx/` | Particles, blood, decals, muzzle flashes, fire and other effects |
-| `src/game/` | Rules: rounds, economy, purchases, power-ups, loot, machines, tuning values |
-| `src/level/` | The map: layout, buildings, props, vehicles, collision |
-| `src/mats/` | Procedural materials and textures |
-| `src/nav/` | Navigation grid and flow fields for zombie pathing |
-| `src/net/` | Leaderboard and report clients for the optional backend |
-| `src/player/` | Player movement, view, input, touch controls and the test bot |
-| `src/render/` | Renderer, lighting, shadows, sky, post-processing and quality tiers |
-| `src/ui/` | Menus, HUD, loading screen, hints, end screen, leaderboard and report screens |
-| `src/weapon/` | Weapons: models, animation, firing and the first-person view |
-| `src/zombie/` | Zombie bodies, animation, AI and spawning |
-| `server/` | The optional Cloudflare Worker for the leaderboard and reports |
-| `scripts/` | Build, smoke-test, screenshot and benchmarking scripts |
-| `tests/` | Vitest unit tests |
+| `src/audio/` | 합성 효과음, 음성, 앰비언스, 음악 |
+| `src/core/` | 게임 루프, 이벤트, 기기 감지, 저장, 시드 난수, URL 파라미터 |
+| `src/fx/` | 파티클, 피, 데칼, 총구 화염, 불 등 효과 |
+| `src/game/` | 규칙: 라운드, 경제, 구매, 파워업, 전리품, 기계, 튜닝 값 |
+| `src/level/` | 맵: 배치, 건물, 소품, 차량, 충돌 |
+| `src/mats/` | 절차적 재질과 텍스처 |
+| `src/nav/` | 좀비 경로 탐색용 내비게이션 그리드와 플로 필드 |
+| `src/net/` | 선택적 백엔드용 리더보드·신고 클라이언트 |
+| `src/player/` | 이동, 시점, 입력, 터치 조작, 테스트 봇 |
+| `src/render/` | 렌더러, 조명, 그림자, 하늘, 후처리, 화질 단계 |
+| `src/ui/` | 메뉴, HUD, 로딩 화면, 힌트, 종료 화면, 리더보드, 신고 화면 |
+| `src/weapon/` | 무기: 모델, 애니메이션, 발사, 1인칭 뷰 |
+| `src/zombie/` | 좀비 몸체, 애니메이션, AI, 스폰 |
+| `server/` | 리더보드·신고용 선택적 Cloudflare Worker |
+| `scripts/` | 빌드, 스모크 테스트, 스크린샷, 벤치마크 스크립트 |
+| `tests/` | Vitest 단위 테스트 |
 
-## Configuration
+## 크레딧
 
-The online features are configured at build time from two environment variables, documented in
-[`.env.example`](.env.example):
+- 원작: **Graveyard Shift** — Built by Fable 5.2, prompted by [Ethan](https://x.com/ethanplusai)
+  ([ethanplusai/zombies](https://github.com/ethanplusai/zombies))
+- 한글화: [sigco3111](https://github.com/sigco3111) with Instinct (2026)
 
-- `GS_API_BASE`: the URL of your deployed Worker from `server/`.
-- `GS_ALLOWED_ORIGINS`: a comma list of the origins the game is served from.
+## 라이선스
 
-Without both, the game builds with the leaderboard and report form switched off and makes no requests
-to any API. To run your own backend, follow [`server/README.md`](server/README.md).
-
-## Credits
-
-Built by Fable 5.2, prompted by [Ethan](https://x.com/ethanplusai).
-
-## Licence
-
-[MIT](LICENSE)
+원작과 동일하게 [MIT](LICENSE)입니다.
