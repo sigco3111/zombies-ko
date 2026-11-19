@@ -214,7 +214,7 @@ describe('level data', () => {
 
   it('interactables, areas, rain occluders and named shots are as the contract says', () => {
     const ammo = L.interactables.find((i) => i.kind === 'wallAmmo');
-    expect(ammo).toMatchObject({ radius: 1.6, cost: tuning.wallAmmo.cost, label: 'Ammo', zone: 'forecourt' });
+    expect(ammo).toMatchObject({ radius: 1.6, cost: tuning.wallAmmo.cost, label: '탄약', zone: 'forecourt' });
     for (const i of L.interactables) { expect(typeof i.id).toBe('string'); expect(i.pos.length).toBe(3); }
     expect(L.areas.find((a) => a.name === 'canopy')).toBeTruthy();
     expect(level.rainOccluders.length).toBeGreaterThanOrEqual(3);

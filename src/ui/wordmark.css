@@ -8,8 +8,8 @@
    Rockwell or Georgia would read thin; Alfa Slab One has one weight, so asking for bold would smear it). */
 @font-face { font-family: 'GS Slab Fallback'; font-weight: 400; src: local('Rockwell Extra Bold'), local('Rockwell-ExtraBold'), local('Rockwell-Bold'), local('Rockwell Bold'), local('RobotoSlab-Bold'), local('Roboto Slab Bold'), local('Georgia-Bold'), local('Georgia Bold'), local('NotoSerif-Bold'), local('Noto Serif Bold'); }
 .gs-wm {
-  --wm-font-a: 'Alfa Slab One', 'GS Slab Fallback', Rockwell, Georgia, serif;
-  --wm-font-b: 'Yellowtail', 'Brush Script MT', 'Segoe Script', 'Snell Roundhand', 'Savoye LET', Georgia, serif;
+  --wm-font-a: 'Black Han Sans', 'Alfa Slab One', 'GS Slab Fallback', Rockwell, Georgia, serif;
+  --wm-font-b: 'Do Hyeon', 'Yellowtail', 'Brush Script MT', 'Segoe Script', 'Snell Roundhand', 'Savoye LET', Georgia, serif;
   --wm-ink: var(--ink, #ece6d6); --wm-accent: var(--accent, #ff4a3d); --wm-core: #fff0ec;
   --wm-band: var(--teal, #17877d); --wm-band-line: var(--ink, #ece6d6);
   --wm-scale-b: 2.05; --wm-tilt: -5deg;

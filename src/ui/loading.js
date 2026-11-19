@@ -15,18 +15,18 @@ export const TIP_MS = 4000;
 
 // Each tip: { key, touch? } in the player's words; numbers are the tuning's (economy, world, loot, touch).
 export const TIPS = [
-  { key: 'Every hit pays 10 points, a kill 60, a headshot kill 100. Aim for the head.' },
-  { key: 'Knife kills pay 130. When one gets close, press V.', touch: 'Knife kills pay 130. When one gets close, tap the knife.' },
-  { key: 'Points open doors. The diner is 750; the way to the motel and the garage costs more.' },
-  { key: 'The power switch is in the garage. The machines and the upgrade bench do nothing until it is on.' },
-  { key: 'The weapon box is 950 for a random gun. Take it within 10 seconds or it is gone.' },
-  { key: 'Hold F to search a car or a crate. Each one can be searched once.', touch: 'Hold SEARCH at a car or a crate. Each one can be searched once.' },
-  { key: 'Armour plates take the damage before your health does. You can wear three.' },
-  { key: 'With the power on, the upgrade bench makes any gun stronger for 4000.' },
-  { key: "Hold Shift to sprint, but you can't shoot while you're sprinting.", touch: "Push the stick all the way to sprint, but you can't shoot while you're sprinting." },
-  { key: 'Hold F at a broken window to nail the boards back: 10 points a board, up to 200 a round.', touch: 'Hold REPAIR at a broken window to nail the boards back: 10 points a board, up to 200 a round.' },
-  { key: "The ammo crate out front fills whatever gun you're holding. Pistol ammo is 250; bigger guns cost more." },
-  { key: 'Power-ups glow on the ground for 25 seconds. Walk over one to take it.' },
+  { key: '한 발 맞출 때마다 10점, 처치 60점, 헤드샷 처치 100점. 머리를 노리세요.' },
+  { key: '칼로 처치하면 130점. 가까이 오면 V를 누르세요.', touch: '칼로 처치하면 130점. 가까이 오면 칼 버튼을 탭하세요.' },
+  { key: '점수로 문을 엽니다. 식당은 750점, 모텔과 차고로 가는 길은 더 비쌉니다.' },
+  { key: '전원 스위치는 차고에 있습니다. 전원이 켜져야 특전 기계와 업그레이드 작업대가 작동합니다.' },
+  { key: '무기 상자는 950점에 무작위 총 한 자루. 10초 안에 가져가지 않으면 사라집니다.' },
+  { key: '자동차나 상자는 F를 길게 눌러 조사하세요. 각각 한 번씩 조사할 수 있습니다.', touch: '자동차나 상자는 조사를 길게 누르세요. 각각 한 번씩 조사할 수 있습니다.' },
+  { key: '방호판이 체력보다 먼저 피해를 받습니다. 세 개까지 착용할 수 있습니다.' },
+  { key: '전원이 켜지면 업그레이드 작업대에서 4000점에 어떤 총이든 강해집니다.' },
+  { key: 'Shift를 누르면 달리지만, 달리는 동안은 쏠 수 없습니다.', touch: '스틱을 끝까지 밀면 달리지만, 달리는 동안은 쏠 수 없습니다.' },
+  { key: '부서진 창문에서 F를 길게 눌러 판자를 다시 못 박으세요: 판자 하나에 10점, 라운드당 최대 200점.', touch: '부서진 창문에서 수리를 길게 눌러 판자를 다시 못 박으세요: 판자 하나에 10점, 라운드당 최대 200점.' },
+  { key: '앞마당의 탄약 상자는 손에 든 총의 탄약을 채워줍니다. 권총 탄약은 250점, 큰 총은 더 비쌉니다.' },
+  { key: '파워업은 바닥에서 25초 동안 빛납니다. 밟고 지나가면 가져갑니다.' },
 ];
 
 export const tipText = (tip, touch) => (touch && tip.touch) || tip.key;

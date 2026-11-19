@@ -28,8 +28,8 @@
   --u: calc(min(100vh, 56.25vw) / 1080);
   --m: max(22px, calc(54 * var(--u)));
   --sl: env(safe-area-inset-left, 0px); --sr: env(safe-area-inset-right, 0px); --st: env(safe-area-inset-top, 0px); --sb: env(safe-area-inset-bottom, 0px);
-  --display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue Condensed', 'Roboto Condensed', sans-serif;
-  --label: 'Overpass', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
+  --display: 'Barlow Condensed', 'Do Hyeon', 'Arial Narrow', 'Helvetica Neue Condensed', 'Roboto Condensed', sans-serif;
+  --label: 'Overpass', 'Noto Sans KR', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
   --t-sm: max(12px, calc(14 * var(--u)));
   --t-md: max(13px, calc(17 * var(--u)));
   --shadow: 0 1px 2px rgba(0, 0, 0, .9), 0 0 calc(18 * var(--u)) rgba(0, 0, 0, .75);

@@ -29,15 +29,15 @@ export function createScore() {
     summary({ round = 0, earned = 0, spent = 0, best = 0, newBest = false } = {}) {
       const acc = s.accuracy;
       const rows = [
-        { label: 'Round reached', value: String(round) },
-        { label: 'Kills', value: String(s.kills) },
-        { label: 'Headshots', value: String(s.headshots) },
-        { label: 'Accuracy', value: `${Math.round(acc * 100)}%` },
-        { label: 'Points earned', value: String(earned) },
-        { label: 'Points spent', value: String(spent) },
-        { label: 'Doors opened', value: String(s.doors) },
-        { label: 'Time', value: clock(s.seconds) },
-        { label: 'Best round', value: newBest ? `${best} (new)` : String(best) },
+        { label: '도달 라운드', value: String(round) },
+        { label: '처치', value: String(s.kills) },
+        { label: '헤드샷', value: String(s.headshots) },
+        { label: '명중률', value: `${Math.round(acc * 100)}%` },
+        { label: '획득 점수', value: String(earned) },
+        { label: '사용 점수', value: String(spent) },
+        { label: '연 문', value: String(s.doors) },
+        { label: '시간', value: clock(s.seconds) },
+        { label: '최고 라운드', value: newBest ? `${best} (신기록)` : String(best) },
       ];
       return { round, kills: s.kills, headshots: s.headshots, accuracy: acc, earned, spent, seconds: s.seconds, doors: s.doors, best, newBest, rows };
     },

@@ -1,28 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<title>Graveyard Shift</title>
-<meta name="description" content="Graveyard Shift: a round-based zombie survival shooter at a rain-soaked night truck stop. Hold the fuel station, the diner and the motel for as many rounds as you can. Free in your browser.">
+<title>그레이브야드 시프트 (Graveyard Shift 한글판)</title>
+<meta name="description" content="그레이브야드 시프트: 비 내리는 밤의 트럭 스톱에서 펼쳐지는 라운드제 좀비 생존 슈터. 주유소, 식당, 모텔을 지키며 버틸 수 있는 만큼 버텨보세요. 브라우저에서 무료.">
 <meta name="theme-color" content="#05070a">
-<meta property="og:title" content="Graveyard Shift">
-<meta property="og:description" content="Survive round after round of the dead at a rain-soaked truck stop, free in your browser.">
+<meta property="og:title" content="그레이브야드 시프트 (Graveyard Shift 한글판)">
+<meta property="og:description" content="비 내리는 트럭 스톱에서 라운드마다 몰려오는 망자들로부터 살아남으세요. 브라우저에서 무료.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://zombies.ethanplus.ai/">
-<meta property="og:site_name" content="Graveyard Shift">
-<meta property="og:image" content="https://zombies.ethanplus.ai/og.jpg">
+<meta property="og:url" content="https://sigco3111.github.io/zombies-ko/">
+<meta property="og:site_name" content="그레이브야드 시프트">
+<meta property="og:image" content="https://sigco3111.github.io/zombies-ko/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Graveyard Shift: a lone survivor with a pistol faces a crowd of zombies at a fuel station in the rain at night.">
+<meta property="og:image:alt" content="그레이브야드 시프트: 비 내리는 밤의 주유소에서 권총을 든 생존자가 좀비 무리와 맞섭니다.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@ethanplusai">
-<meta name="twitter:creator" content="@ethanplusai">
-<meta name="twitter:title" content="Graveyard Shift">
-<meta name="twitter:description" content="Survive round after round of the dead at a rain-soaked truck stop, free in your browser.">
-<meta name="twitter:image" content="https://zombies.ethanplus.ai/og.jpg">
-<meta name="twitter:image:alt" content="Graveyard Shift: a lone survivor with a pistol faces a crowd of zombies at a fuel station in the rain at night.">
+<meta name="twitter:title" content="그레이브야드 시프트 (Graveyard Shift 한글판)">
+<meta name="twitter:description" content="비 내리는 트럭 스톱에서 라운드마다 몰려오는 망자들로부터 살아남으세요. 브라우저에서 무료.">
+<meta name="twitter:image" content="https://sigco3111.github.io/zombies-ko/og.jpg">
+<meta name="twitter:image:alt" content="그레이브야드 시프트: 비 내리는 밤의 주유소에서 권총을 든 생존자가 좀비 무리와 맞섭니다.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2305070a'/%3E%3Ccircle cx='30' cy='26' r='15' fill='%23f4a93a'/%3E%3Ccircle cx='37' cy='20' r='13' fill='%2305070a'/%3E%3Crect x='8' y='45' width='48' height='6' fill='%231fa596'/%3E%3Crect x='8' y='53' width='48' height='3' fill='%23efe6cc'/%3E%3C/svg%3E">
 <style>
   html, body { margin: 0; height: 100%; background: #05070a; overflow: hidden;
@@ -39,13 +37,13 @@
   <div class="ld-art" aria-hidden="true"><img alt=""></div>
   <div class="ld-shade" aria-hidden="true"></div>
   <div class="ld-top">
-    <h1 class="gs-wm" aria-label="Graveyard Shift"><span class="gs-wm-a" aria-hidden="true">Graveyard</span><span class="gs-wm-band" aria-hidden="true"><svg class="gs-wm-bird" viewBox="0 0 44 22" aria-hidden="true"><path d="M1 9c7-4 14-3 20 3 3-6 10-10 22-9-8 3-13 7-16 13l-4 5-3-5C16 11 9 9 1 9z"/></svg></span><span class="gs-wm-b" aria-hidden="true">Shift</span></h1>
-    <p class="ld-tag">Round-based survival at the last stop on the highway</p>
+    <h1 class="gs-wm" aria-label="그레이브야드 시프트"><span class="gs-wm-a" aria-hidden="true">그레이브야드</span><span class="gs-wm-band" aria-hidden="true"><svg class="gs-wm-bird" viewBox="0 0 44 22" aria-hidden="true"><path d="M1 9c7-4 14-3 20 3 3-6 10-10 22-9-8 3-13 7-16 13l-4 5-3-5C16 11 9 9 1 9z"/></svg></span><span class="gs-wm-b" aria-hidden="true">시프트</span></h1>
+    <p class="ld-tag">고속도로 마지막 정류장의 라운드제 생존전</p>
   </div>
   <div class="ld-foot">
-    <p class="ld-tip"><span class="line"><span class="k">Tip</span><span class="t"></span></span></p>
+    <p class="ld-tip"><span class="line"><span class="k">팁</span><span class="t"></span></span></p>
     <div id="boot-track"><div id="boot-bar"></div></div>
-    <div id="boot-label" role="status">loading</div>
+    <div id="boot-label" role="status">불러오는 중</div>
   </div>
 </div>
 <script><!--LOADING_JS--></script>

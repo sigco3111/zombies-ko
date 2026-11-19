@@ -19,8 +19,8 @@ const STAGE_SAMPLE = {
   round: 7, points: 4350, mag: 9, reserve: 48, health: 0.68, remaining: 14, kills: 61, earned: 5620, best: 9,
 };
 
-const STAGE_BUY = { id: 'stage', kind: 'wallAmmo', label: 'Ammo', cost: 250 };
-const STAGE_HOLD = { id: 'stage', kind: 'search', label: 'Crate', cost: 0, hold: 2 };
+const STAGE_BUY = { id: 'stage', kind: 'wallAmmo', label: '탄약', cost: 250 };
+const STAGE_HOLD = { id: 'stage', kind: 'search', label: '상자 조사', cost: 0, hold: 2 };
 
 const h = (tag, cls, text) => {
   const e = document.createElement(tag);
@@ -71,7 +71,7 @@ export function createUi(G) {
   for (const d of ['a', 'b', 'c', 'd']) hit.appendChild(h('i', d));
 
   const prompt = h('div', 'gs-prompt');
-  const pPre = h('span', 'pre', 'Press ');
+  const pPre = h('span', 'pre', '');
   const pKey = h('kbd', 'key', 'F');
   const pLabel = h('span', 'lab');
   const pCost = h('span', 'cost');
@@ -79,7 +79,7 @@ export function createUi(G) {
 
   // round (hero, bottom-left)
   const round = h('div', 'gs-round');
-  const rLabel = h('p', 'lbl', 'Round');
+  const rLabel = h('p', 'lbl', '라운드');
   const rNum = h('div', 'num');
   const rOld = h('span', 'old'); const rCur = h('span', 'cur', '1');
   kids(rNum, rOld, rCur);
@@ -93,7 +93,7 @@ export function createUi(G) {
   const ptsNum = h('b', null, '0');
   kids(pts, pops, ptsNum, h('small', null, 'PTS'));
   const ammo = h('div', 'gs-ammo');
-  const aName = h('p', 'wname', 'Pistol');
+  const aName = h('p', 'wname', '권총');
   const aMag = h('div', 'mag');
   const mag = h('b', null, '—'); const reserve = h('em', null, '—');
   kids(aMag, mag, h('i', null, '/'), reserve);
@@ -184,7 +184,7 @@ export function createUi(G) {
     st.dmgT = 1;
     st.dmgAngle = d && Number.isFinite(d.angle) && d.dir ? d.angle : null;
   });
-  on('round:start', ({ n }) => { live.textContent = `Round ${n}`; });
+  on('round:start', ({ n }) => { live.textContent = `라운드 ${n}`; });
 
   function replay(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
 
@@ -225,8 +225,8 @@ export function createUi(G) {
     setRound(rn);
     const rem = S ? S.remaining : remaining(game.director);
     const phase = game.director && game.director.phase;
-    if (!S && phase === 'lull') setText('sub', rSub, `Clear · next in ${Math.max(0, Math.ceil(game.director.timer))}`);
-    else setText('sub', rSub, rem === null ? '' : `${rem} remaining`);
+    if (!S && phase === 'lull') setText('sub', rSub, `클리어 · 다음까지 ${Math.max(0, Math.ceil(game.director.timer))}초`);
+    else setText('sub', rSub, rem === null ? '' : `${rem}마리 남음`);
 
     // ---- points (count toward the true value)
     if (!S) st.targetPts = Number.isFinite(game.points) ? game.points : st.targetPts;
@@ -235,13 +235,13 @@ export function createUi(G) {
     setText('pts', ptsNum, formatPoints(st.shownPts));
 
     // ---- ammo
-    const av = S ? { mag: S.mag, reserve: S.reserve, name: 'Pistol' } : ammoView(G.weapon);
+    const av = S ? { mag: S.mag, reserve: S.reserve, name: '권총' } : ammoView(G.weapon);
     setText('wname', aName, narrowScreen(ui.touch) ? shortWeaponName(av.name) : av.name);
     setText('mag', mag, av.mag === null ? '—' : String(av.mag));
     setText('res', reserve, av.reserve === null ? '—' : String(av.reserve));
     const lowMag = av.mag !== null && av.mag <= Math.ceil(magSize * 0.25);
     setClass('mag', aMag, 'low', lowMag);
-    setText('ahint', aHint, !S && G.weapon && G.weapon.reloading ? 'Reloading' : av.mag === 0 ? (ui.touch ? 'Tap RELOAD' : 'Press R to reload') : av.mag !== null && lowMag && av.reserve ? 'Low' : '');
+    setText('ahint', aHint, !S && G.weapon && G.weapon.reloading ? '재장전 중' : av.mag === 0 ? (ui.touch ? '재장전 탭' : 'R로 재장전') : av.mag !== null && lowMag && av.reserve ? '부족' : '');
     for (let i = 0; i < pips.children.length; i++) {
       const k = `pip${i}`; const onNow = av.mag !== null && i < av.mag;
       if (cache[k] !== onNow) { cache[k] = onNow; pips.children[i].classList.toggle('on', onNow); }
@@ -378,7 +378,7 @@ export function createUi(G) {
       corners[cornerFor(p.corner)].appendChild(el);
       return () => { const i = panels.indexOf(p); if (i >= 0) panels.splice(i, 1); el.remove(); };
     },
-    // The key on a keyboard, the button's name on touch: keyLabel('reload') -> 'R' or 'RELOAD'.
+    // The key on a keyboard, the button's name on touch: keyLabel('reload') -> 'R' or '재장전'.
     keyLabel(action) { return keyLabel(action, ui.touch, G.game && G.game.focus); },
     // show('title'|'paused'|'dead') or null to hide every menu. The next game:state event wins again.
     show(name) { st.deadDelay = 0; menus.show(name || null); },

@@ -53,7 +53,7 @@ describe('the ammo crate refills the weapon in hand', () => {
       const focus = g.game.focus;
       expect(focus.id).toBe('ammo-store');
       expect(focus.cost).toBe(price);
-      expect(focus.label).toBe(`${WEAPONS[id].name} ammo`);
+      expect(focus.label).toBe(`${WEAPONS[id].name} 탄약`);
       held(g).reserve = 0;
       const o = other(g);
       if (o) o.reserve = 1;
@@ -75,13 +75,13 @@ describe('the ammo crate refills the weapon in hand', () => {
     const s = held(g);
     expect(s.upgraded).toBe(true);
     expect(g.game.focus.cost).toBe(2100);
-    expect(g.game.focus.label).toBe(`${statsFor(s).name} ammo`);
+    expect(g.game.focus.label).toBe(`${statsFor(s).name} 탄약`);
     s.reserve = 0;
     press(g);
     expect(s.reserve).toBe(statsFor(s).maxReserve);
     expect(s.reserve).toBeGreaterThan(WEAPONS.rifle.maxReserve);
     expect(g.game.points).toBe(20000 - 2100);
-    expect(promptString(g.game.focus)).toBe(`Press F — ${statsFor(s).name} ammo · ${formatPoints(2100)}`);
+    expect(promptString(g.game.focus)).toBe(`F 누르기 — ${statsFor(s).name} 탄약 · ${formatPoints(2100)}`);
   });
 
   it('upgraded crate prices: 3x stock, at most 3000, below the 4000 upgrade', () => {
@@ -113,7 +113,7 @@ describe('the ammo crate refills the weapon in hand', () => {
     g.G.weapon.switchTo(1);
     g.run(1);
     expect(g.game.focus.cost).toBe(WEAPONS.smg.wall.ammo);
-    expect(g.game.focus.label).toBe(`${WEAPONS.smg.name} ammo`);
+    expect(g.game.focus.label).toBe(`${WEAPONS.smg.name} 탄약`);
     press(g);
     expect(g.G.weapon.slots[1].reserve).toBe(WEAPONS.smg.maxReserve);
     expect(g.game.points).toBe(20000 - TE.crateAmmo.lmg - WEAPONS.smg.wall.ammo);
@@ -130,8 +130,8 @@ describe('the ammo crate refills the weapon in hand', () => {
   it('the prompt says what and how much, on a keyboard and on a phone', () => {
     const g = atCrate(['rifle']);
     const f = g.game.focus;
-    expect(promptString(f)).toBe(`Press F — ${WEAPONS.rifle.name} ammo · ${WEAPONS.rifle.wall.ammo}`);
-    expect(promptString(f, 'touch')).toBe(`Tap BUY: ${WEAPONS.rifle.name} ammo — ${WEAPONS.rifle.wall.ammo}`);
+    expect(promptString(f)).toBe(`F 누르기 — ${WEAPONS.rifle.name} 탄약 · ${WEAPONS.rifle.wall.ammo}`);
+    expect(promptString(f, 'touch')).toBe(`구매 탭: ${WEAPONS.rifle.name} 탄약 — ${WEAPONS.rifle.wall.ammo}`);
     // the label is the same string every frame (the HUD compares it to redraw only on a change)
     expect(g.game.focus.label).toBe(f.label);
     g.step();

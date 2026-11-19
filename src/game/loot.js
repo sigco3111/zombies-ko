@@ -22,7 +22,7 @@ const TP = tuning.economy.powerups;
 const THROW = tuning.weapons.throwables.kinds;
 const ATTACH = tuning.weapons.attachments.kinds;
 
-const NOUN = { car: 'car', barrel: 'barrel', crate: 'crate', bin: 'bin', locker: 'locker', icebox: 'ice box', suitcase: 'suitcase', dresser: 'dresser', toolchest: 'tool chest' };
+const NOUN = { car: '자동차', barrel: '드럼통', crate: '나무 상자', bin: '쓰레기통', locker: '사물함', icebox: '아이스박스', suitcase: '여행 가방', dresser: '옷장', toolchest: '공구함' };
 
 export function bracketOf(round) {
   let col = 0;
@@ -80,7 +80,7 @@ export function createLoot({ searchables = [], emit = () => {}, economy, powerup
     pickups: [],
     interactables: searchables.map((s) => ({
       id: s.id, kind: 'search', search: s.id, pos: s.pos, radius: T.radius, cost: 0, zone: s.zone,
-      label: `Search ${NOUN[s.kind] || s.kind}`, hold: T.hold, prop: s.prop,
+      label: `${NOUN[s.kind] || s.kind} 조사`, hold: T.hold, prop: s.prop,
       enabled: () => !loot.searched.has(s.id),
     })),
 
@@ -252,7 +252,7 @@ export function createLoot({ searchables = [], emit = () => {}, economy, powerup
     const label = item === 'axe' ? tuning.weapons.melee.axe.name : WEAPONS[item].name;
     const pk = {
       id: `pickup-${nextPickup++}`, kind: 'pickup', item, pos: [at[0], at[1], at[2]], radius: T.radius,
-      cost: 0, label: `Take ${label}`, ttl: T.pickupTtl, enabled: () => true,
+      cost: 0, label: `${label} 줍기`, ttl: T.pickupTtl, enabled: () => true,
     };
     loot.pickups.push(pk);
     const list = interactables();

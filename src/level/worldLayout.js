@@ -76,11 +76,11 @@ export function zoneAt(x, z) {
 // rect: the opening the barrier fills (x0, z0, x1, z1 and its height h); look: what the
 // buildBarrier draws there. Costs live in tuning.world.doors.
 export const doors = [
-  { id: 'd1', a: 'forecourt', b: 'diner', pos: [12.2, 1.2, -20.15], rect: { x0: 11.05, z0: -20.3, x1: 13.35, z1: -20.0 }, h: 2.65, look: 'boarded', label: 'Diner' },
-  { id: 'd2', a: 'diner', b: 'motel', pos: [26.45, 1.2, -27.25], rect: { x0: 26.3, z0: -27.85, x1: 26.6, z1: -26.65 }, h: 2.2, look: 'boarded', label: 'Back door' },
-  { id: 'd3', a: 'motel', b: 'garage', pos: [44, 1.2, -2], rect: { x0: 42.5, z0: -2.15, x1: 45.5, z1: -1.85 }, h: 3.2, look: 'sheet', label: 'Yard gate' },
-  { id: 'd4', a: 'garage', b: 'forecourt', pos: [22.3, 1.2, 10.1], rect: { x0: 22.22, z0: 8.9, x1: 22.38, z1: 11.3 }, h: 2.4, look: 'sheet', label: 'Scrapyard gate' },
-  { id: 'd5', a: 'forecourt', b: 'motel', pos: [26.6, 1.2, -11.5], rect: { x0: 26.45, z0: -12.75, x1: 26.75, z1: -10.25 }, h: 3.0, look: 'roller', label: 'Alley gate' },
+  { id: 'd1', a: 'forecourt', b: 'diner', pos: [12.2, 1.2, -20.15], rect: { x0: 11.05, z0: -20.3, x1: 13.35, z1: -20.0 }, h: 2.65, look: 'boarded', label: '식당' },
+  { id: 'd2', a: 'diner', b: 'motel', pos: [26.45, 1.2, -27.25], rect: { x0: 26.3, z0: -27.85, x1: 26.6, z1: -26.65 }, h: 2.2, look: 'boarded', label: '뒷문' },
+  { id: 'd3', a: 'motel', b: 'garage', pos: [44, 1.2, -2], rect: { x0: 42.5, z0: -2.15, x1: 45.5, z1: -1.85 }, h: 3.2, look: 'sheet', label: '마당 문' },
+  { id: 'd4', a: 'garage', b: 'forecourt', pos: [22.3, 1.2, 10.1], rect: { x0: 22.22, z0: 8.9, x1: 22.38, z1: 11.3 }, h: 2.4, look: 'sheet', label: '고물상 문' },
+  { id: 'd5', a: 'forecourt', b: 'motel', pos: [26.6, 1.2, -11.5], rect: { x0: 26.45, z0: -12.75, x1: 26.75, z1: -10.25 }, h: 3.0, look: 'roller', label: '골목 문' },
 ].map((d) => ({ ...d, cost: T.doors[d.id] }));
 
 // Zone pairs that see each other across their boundary whatever the doors: the forecourt's east

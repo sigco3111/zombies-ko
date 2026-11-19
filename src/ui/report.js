@@ -17,9 +17,9 @@ import { track } from '../core/analytics.js';
 const h = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
 const btn = (cls, text, onClick) => { const b = h('button', `gs-lk-btn${cls ? ` ${cls}` : ''}`, text); b.type = 'button'; if (onClick) b.addEventListener('click', onClick); return b; };
 
-export const ATTACHED_TEXT = 'Sent with it: game version, device type, graphics tier, round, area, weapon, frame rate, screen size and browser. Nothing else.';
-export const CONTACT_LABEL = 'How can we reach you? (optional — it will be visible in the report)';
-const KIND_OPTS = [['bug', 'Bug'], ['idea', 'Idea'], ['other', 'Other']];
+export const ATTACHED_TEXT = '함께 보내는 정보: 게임 버전, 기기 종류, 그래픽 등급, 라운드, 구역, 무기, 프레임률, 화면 크기, 브라우저. 그 외에는 없습니다.';
+export const CONTACT_LABEL = '연락처 (선택 — 신고 내용에 표시됩니다)';
+const KIND_OPTS = [['bug', '버그'], ['idea', '아이디어'], ['other', '기타']];
 
 export function createReport(G, { menus, client, links = [] }) {
   const S = { kind: 'bug', phase: 'form', where: 'title', backTo: 'title', sending: 0 };
@@ -29,11 +29,11 @@ export function createReport(G, { menus, client, links = [] }) {
   function build(col) {
     col.classList.add('gs-rp-col');
     const head = h('header', 'gs-head');
-    head.append(h('p', 'gs-eyebrow', 'Front desk'), h('h2', 'gs-h', 'Report a problem'));
+    head.append(h('p', 'gs-eyebrow', '프런트 데스크'), h('h2', 'gs-h', '문제 신고'));
 
     const form = h('form', 'gs-rp-form');
     form.noValidate = true;
-    form.setAttribute('aria-label', 'Report a problem');
+    form.setAttribute('aria-label', '문제 신고');
     el.form = form;
 
     // kind: a radio group like the settings rows
@@ -70,7 +70,7 @@ export function createReport(G, { menus, client, links = [] }) {
     el.msg.id = 'gs-rp-msg';
     el.msg.rows = 5;
     el.msg.maxLength = MESSAGE_MAX + 200; // the count, not the browser, explains the limit
-    el.msg.placeholder = 'What you were doing, what you expected, what you saw.';
+    el.msg.placeholder = '무엇을 하고 있었는지, 무엇을 기대했는지, 무엇을 보았는지.';
     el.msg.setAttribute('autocomplete', 'off');
     el.msg.setAttribute('enterkeyhint', 'enter');
     el.count = h('span', 'gs-rp-count');
@@ -96,7 +96,7 @@ export function createReport(G, { menus, client, links = [] }) {
     el.contact.setAttribute('autocapitalize', 'off');
     el.contact.setAttribute('autocorrect', 'off');
     el.contact.setAttribute('enterkeyhint', 'send');
-    el.contact.placeholder = 'Email, Discord, X…';
+    el.contact.placeholder = '이메일, 디스코드, X…';
     el.cErr = h('p', 'gs-rp-err');
     el.cErr.setAttribute('aria-live', 'polite');
     cRow.append(cLabel, el.contact, el.cErr);
@@ -110,9 +110,9 @@ export function createReport(G, { menus, client, links = [] }) {
     el.hp.setAttribute('aria-hidden', 'true');
 
     const attached = h('p', 'gs-rp-note', ATTACHED_TEXT);
-    el.send = btn('primary', 'Send');
+    el.send = btn('primary', '보내기');
     el.send.type = 'submit';
-    const cancel = btn('', 'Cancel', () => close());
+    const cancel = btn('', '취소', () => close());
     const btns = h('div', 'gs-rp-btns');
     el.status = h('p', 'gs-rp-status');
     el.status.setAttribute('role', 'status');
@@ -124,7 +124,7 @@ export function createReport(G, { menus, client, links = [] }) {
     el.done.hidden = true;
     el.doneText = h('p', 'gs-rp-sent', SENT_TEXT);
     el.doneText.setAttribute('role', 'status');
-    el.doneBtn = btn('primary', 'Done', () => close());
+    el.doneBtn = btn('primary', '확인', () => close());
     el.done.append(el.doneText, el.doneBtn);
 
     col.append(head, form, el.done);
@@ -176,7 +176,7 @@ export function createReport(G, { menus, client, links = [] }) {
     el.done.hidden = !sent;
     const sending = S.phase === 'sending';
     el.send.disabled = sending;
-    el.send.textContent = sending ? 'Sending' : 'Send';
+    el.send.textContent = sending ? '보내는 중' : '보내기';
     el.msg.readOnly = sending;
     el.contact.readOnly = sending;
     if (sent) el.doneBtn.dataset.autofocus = '1';
@@ -200,7 +200,7 @@ export function createReport(G, { menus, client, links = [] }) {
     if (payloadBytes(payload) > BODY_MAX) { el.msgErr.textContent = fieldErrorText('message_bytes'); el.msg.focus(); return; }
     const id = ++S.sending;
     S.phase = 'sending';
-    setStatus('Sending…');
+    setStatus('보내는 중…');
     sync();
     client.send(payload).then((r) => {
       if (id !== S.sending) return;
@@ -245,13 +245,13 @@ export function createReport(G, { menus, client, links = [] }) {
 
   // ---- entry points, hidden until reporting is confirmed on
   const entries = [];
-  const pauseRow = menus.addMenuRow && menus.addMenuRow('paused', { label: 'Report a problem', hint: 'Bug or idea', onClick: () => open('pause') });
+  const pauseRow = menus.addMenuRow && menus.addMenuRow('paused', { label: '문제 신고', hint: '버그 또는 아이디어', onClick: () => open('pause') });
   if (pauseRow) { pauseRow.classList.add('gs-rp-entry'); pauseRow.hidden = true; entries.push(pauseRow); }
   for (const { host, where } of links) {
     if (!host) continue;
     const dot = h('span', 'dot gs-rp-entry', '·');
     dot.setAttribute('aria-hidden', 'true');
-    const a = h('button', 'gs-lk-link gs-rp-link gs-rp-entry', 'Report a problem');
+    const a = h('button', 'gs-lk-link gs-rp-link gs-rp-entry', '문제 신고');
     a.type = 'button';
     a.addEventListener('click', () => open(where));
     dot.hidden = true; a.hidden = true;

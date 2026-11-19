@@ -27,19 +27,19 @@ export const economy = {
   bench: { cost: 4000 }, // one upgrade tier per weapon; needs power
   // Machines: need power, kept until death.
   machines: {
-    secondHelping: { name: 'Second Helping', cost: 2500, maxHealth: 175 },
-    shortOrder: { name: 'Short Order', cost: 3000, reloadScale: 0.6 },
-    longHaul: { name: 'Long Haul', cost: 2000, speed: 1.12 }, // walk and sprint; no stamina system
+    secondHelping: { name: '한 그릇 더', cost: 2500, maxHealth: 175 },
+    shortOrder: { name: '즉석 조리', cost: 3000, reloadScale: 0.6 },
+    longHaul: { name: '장거리 운행', cost: 2000, speed: 1.12 }, // walk and sprint; no stamina system
     // a killing hit leaves you at `health`, immune for `invuln` s, and throws back every zombie within
     // `radius` m; then the machine is spent and costs `step` more each time it is bought again
     // push: metres each zombie is thrown back (G.zombies.stagger takes a distance: about 2.5 m/s for 0.6 s)
-    jumpStart: { name: 'Jump Start', cost: 1500, step: 1000, health: 50, invuln: 3, radius: 4, push: 1.5, stagger: 1.2 },
+    jumpStart: { name: '점프 스타트', cost: 1500, step: 1000, health: 50, invuln: 3, radius: 4, push: 1.5, stagger: 1.2 },
   },
   machineKinds: ['jumpStart', 'secondHelping', 'shortOrder', 'longHaul'],
   // Power-ups dropped by kills.
   powerups: {
     kinds: ['resupply', 'oneTap', 'doubleTime', 'flashover'],
-    names: { resupply: 'Resupply', oneTap: 'One-Tap', doubleTime: 'Double Time', flashover: 'Flashover' },
+    names: { resupply: '재보급', oneTap: '한 방에', doubleTime: '두 배 시간', flashover: '플래시오버' },
     chance: 0.03, // of a kill
     perRound: 4, // at most this many drops a round (a brute's drop does not count against it)
     gap: 10, // s: never a drop within this long of the last one

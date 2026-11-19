@@ -35,11 +35,11 @@ const RANK = (n) => `#${n}`;
 
 // Copy a code from inside the click; fall back to selecting it in its (readonly) field.
 function copyField(field, note) {
-  const done = () => { note.textContent = 'Copied'; };
+  const done = () => { note.textContent = '복사됨' };
   const fallback = () => {
     let ok = false;
     try { field.focus({ preventScroll: true }); field.select(); ok = document.execCommand && document.execCommand('copy'); } catch { ok = false; }
-    note.textContent = ok ? 'Copied' : 'Selected — copy it now';
+    note.textContent = ok ? '복사됨' : '선택됨 — 지금 복사하세요';
   };
   try {
     const p = navigator.clipboard && navigator.clipboard.writeText(field.value);
@@ -112,12 +112,12 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
   function buildForm() {
     const f = h('form', 'gs-lk-form');
     f.noValidate = true;
-    f.setAttribute('aria-label', 'Save this run');
-    const input = textInput('tag', 'Gamertag', { maxLength: TAG_MAX + 8, caps: 'words' });
-    input.placeholder = 'Gamertag';
-    const saveBtn = btn('primary', 'Save');
+    f.setAttribute('aria-label', '이 기록 저장');
+    const input = textInput('tag', '게이머태그', { maxLength: TAG_MAX + 8, caps: 'words' });
+    input.placeholder = '게이머태그';
+    const saveBtn = btn('primary', '저장');
     saveBtn.type = 'submit';
-    const skip = btn('', 'Skip', () => {
+    const skip = btn('', '건너뛰기', () => {
       skipped = true;
       S.phase = 'skipped';
       renderSlot();
@@ -156,15 +156,15 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
     });
     return { f, input, save: saveBtn, skip };
   }
-  const HINT = '3–16 letters, numbers, spaces, - or _. Optional.';
+  const HINT = '영문자·숫자·공백·-·_ 3~16자. 선택 사항.';
 
   function statusLine(phase) {
     const tag = identity.tag() || '';
-    if (phase === 'saving') return ['Saving as ', tag, '…'];
-    if (phase === 'saved') return ['Saved as ', tag, S.rank ? ` · rank ${RANK(S.rank)}` : ''];
-    if (phase === 'stale') return [tag, ' is in use on another device', ''];
-    if (phase === 'rejected') return ['This run was not saved', '', ''];
-    if (phase === 'failed') return ['Couldn’t reach the leaderboard', '', ''];
+    if (phase === 'saving') return ['', tag, ' 이름으로 저장 중…'];
+    if (phase === 'saved') return ['', tag, ` 이름으로 저장됨${S.rank ? ` · 순위 ${RANK(S.rank)}` : ''}`];
+    if (phase === 'stale') return [tag, ' 태그가 다른 기기에서 사용 중입니다', ''];
+    if (phase === 'rejected') return ['이 기록은 저장되지 않았습니다', '', ''];
+    if (phase === 'failed') return ['리더보드에 연결할 수 없습니다', '', ''];
     return ['', '', ''];
   }
   // tag in its own span (textContent), so a tag is never parsed as markup
@@ -186,12 +186,12 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
     slot.main.textContent = '';
     if (p === 'form' || p === 'claiming') {
       if (!form) form = buildForm();
-      slot.eyebrow.textContent = 'Save this run — pick a gamertag';
+      slot.eyebrow.textContent = '이 기록 저장 — 게이머태그를 정하세요';
       slot.main.appendChild(form.f);
       form.input.disabled = p === 'claiming';
       form.save.disabled = p === 'claiming';
-      form.save.textContent = p === 'claiming' ? 'Saving' : 'Save';
-      if (S.error) { slot.note.textContent = S.error; slot.note.classList.add('err'); } else slot.note.textContent = p === 'claiming' ? 'Claiming your tag…' : HINT;
+      form.save.textContent = p === 'claiming' ? '저장 중' : '저장';
+      if (S.error) { slot.note.textContent = S.error; slot.note.classList.add('err'); } else slot.note.textContent = p === 'claiming' ? '태그를 등록하는 중…' : HINT;
       return;
     }
     if (p === 'code') {
@@ -201,25 +201,25 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
       const code = h('input', 'gs-lk-code');
       code.readOnly = true;
       code.value = S.recovery;
-      code.setAttribute('aria-label', 'Recovery code');
+      code.setAttribute('aria-label', '복구 코드');
       const note = h('span', 'gs-lk-copied');
       note.setAttribute('aria-live', 'polite');
-      const copy = btn('', 'Copy', () => copyField(code, note));
+      const copy = btn('', '복사', () => copyField(code, note));
       slot.main.append(code, copy, note);
-      slot.note.textContent = 'Save this code to use your tag on another device';
+      slot.note.textContent = '다른 기기에서 이 태그를 쓰려면 이 코드를 저장해 두세요';
       return;
     }
-    slot.eyebrow.textContent = 'Leaderboard';
+    slot.eyebrow.textContent = '리더보드';
     if (p === 'practice') {
-      slot.main.appendChild(line(['Practice run · not saved', '', ''], 'quiet'));
+      slot.main.appendChild(line(['연습 기록 · 저장되지 않음', '', ''], 'quiet'));
       slot.note.textContent = '';
       return;
     }
     slot.main.appendChild(line(statusLine(p), p === 'failed' || p === 'rejected' ? 'quiet' : 'st'));
     if (p === 'stale') {
-      slot.main.appendChild(btn('', 'Recover', () => openBoard({ recover: true })));
-      slot.note.textContent = 'Use your recovery code to bring it here.';
-    } else slot.note.textContent = p === 'saved' && S.best ? 'New personal best' : '';
+      slot.main.appendChild(btn('', '복구', () => openBoard({ recover: true })));
+      slot.note.textContent = '복구 코드로 이 기기로 가져오세요.';
+    } else slot.note.textContent = p === 'saved' && S.best ? '개인 최고 기록' : '';
   }
 
   function mountSlot(target) {
@@ -257,13 +257,13 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
   function build(col) {
     col.classList.add('gs-lk-boardcol');
     const head = h('header', 'gs-head');
-    head.append(h('p', 'gs-eyebrow', 'Leaderboard'), h('h2', 'gs-h', 'Top 100'));
+    head.append(h('p', 'gs-eyebrow', '리더보드'), h('h2', 'gs-h', '상위 100'));
 
     // device filter: a radio group like the settings rows
     const seg = h('div', 'gs-seg gs-lk-seg');
     seg.setAttribute('role', 'radiogroup');
-    seg.setAttribute('aria-label', 'Device');
-    el.opts = [['all', 'All'], ['desktop', 'Desktop'], ['phone', 'Phone']].map(([v, label]) => {
+    seg.setAttribute('aria-label', '기기');
+    el.opts = [['all', '전체'], ['desktop', '데스크톱'], ['phone', '휴대폰']].map(([v, label]) => {
       const o = h('button', 'opt', label);
       o.type = 'button';
       o.setAttribute('role', 'radio');
@@ -282,9 +282,9 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
     });
 
     el.me = h('p', 'gs-lk-me');
-    el.recoverBtn = btn('link', 'Use a tag from another device', () => showRecover(true));
+    el.recoverBtn = btn('link', '다른 기기의 태그 사용', () => showRecover(true));
     el.share = createShareBar(G, { where: 'board' });
-    const back = menuRow('Back', '', () => menus.show(B.backTo || 'title'), true);
+    const back = menuRow('뒤로', '', () => menus.show(B.backTo || 'title'), true);
     const nav = h('nav', 'gs-list gs-back');
     nav.appendChild(back);
     const side = h('div', 'gs-lk-side');
@@ -295,16 +295,16 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
     el.table = table;
     const thead = h('div', 'gs-lk-row gs-lk-thead');
     thead.setAttribute('aria-hidden', 'true');
-    thead.append(h('span', 'rk', '#'), h('span', 'tg', 'Tag'), h('span', 'rd', 'Round'), h('span', 'kl', 'Kills'));
+    thead.append(h('span', 'rk', '#'), h('span', 'tg', '태그'), h('span', 'rd', '라운드'), h('span', 'kl', '처치'));
     el.list = h('ol', 'gs-lk-list');
     el.list.tabIndex = 0;
     el.list.dataset.autofocus = '1';
-    el.list.setAttribute('aria-label', 'Top 100 by best round');
+    el.list.setAttribute('aria-label', '최고 라운드 상위 100');
     el.pinned = h('div', 'gs-lk-pinned');
     el.state = h('div', 'gs-lk-state');
     el.state.setAttribute('aria-live', 'polite');
     el.stateText = h('span', 'tx');
-    el.retry = btn('', 'Try again', () => load(true));
+    el.retry = btn('', '다시 시도', () => load(true));
     el.state.append(el.stateText, el.retry);
     table.append(thead, el.list, el.pinned, el.state);
 
@@ -312,19 +312,19 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
     el.rec = h('form', 'gs-lk-recover');
     el.rec.noValidate = true;
     el.rec.hidden = true;
-    el.rec.setAttribute('aria-label', 'Use a tag from another device');
-    el.recTag = textInput('', 'Gamertag', { maxLength: TAG_MAX + 8, caps: 'words' });
-    el.recTag.placeholder = 'Gamertag';
-    el.recCode = textInput('code', 'Recovery code', { maxLength: 40, caps: 'characters' });
+    el.rec.setAttribute('aria-label', '다른 기기의 태그 사용');
+    el.recTag = textInput('', '게이머태그', { maxLength: TAG_MAX + 8, caps: 'words' });
+    el.recTag.placeholder = '게이머태그';
+    el.recCode = textInput('code', '복구 코드', { maxLength: 40, caps: 'characters' });
     el.recCode.placeholder = 'XXXX-XXXX-XXXX-XXXX';
     el.recNote = h('p', 'gs-lk-note');
     el.recNote.setAttribute('aria-live', 'polite');
-    el.recUse = btn('primary', 'Use tag');
+    el.recUse = btn('primary', '태그 사용');
     el.recUse.type = 'submit';
     const recCancel = btn('', 'Cancel', () => showRecover(false));
     const recBtns = h('div', 'gs-lk-btns');
     recBtns.append(el.recUse, recCancel);
-    el.rec.append(h('p', 'gs-lk-eyebrow', 'Use a tag from another device'), el.recTag, el.recCode, recBtns, el.recNote);
+    el.rec.append(h('p', 'gs-lk-eyebrow', '다른 기기의 태그 사용'), el.recTag, el.recCode, recBtns, el.recNote);
     el.rec.addEventListener('submit', (e) => { e.preventDefault(); recover(); });
     liftWhileTyping(el.rec, [el.recTag, el.recCode], [el.recUse, recCancel]);
 
@@ -350,8 +350,8 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
     for (const o of el.opts) { const on = o.dataset.v === B.device; o.setAttribute('aria-checked', on ? 'true' : 'false'); o.tabIndex = on ? 0 : -1; }
     const tag = identity.tag();
     el.me.textContent = '';
-    if (tag) { el.me.append(document.createTextNode('Playing as '), h('b', 'tag', tag)); el.recoverBtn.textContent = 'Use a different tag'; }
-    else { el.me.textContent = 'No tag yet. Pick one at the end of a run.'; el.recoverBtn.textContent = 'Use a tag from another device'; }
+    if (tag) { el.me.append(document.createTextNode('현재 태그: '), h('b', 'tag', tag)); el.recoverBtn.textContent = '다른 태그 사용'; }
+    else { el.me.textContent = '아직 태그가 없습니다. 기록이 끝날 때 정하세요.'; el.recoverBtn.textContent = '다른 기기의 태그 사용'; }
     const best = B.me && B.me.best;
     el.share.update(S.run || (best ? { round: best.round, kills: best.kills } : null));
   }
@@ -373,7 +373,7 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
     syncSide();
     const id = ++B.loadId;
     if (force) board.invalidate();
-    setState('loading', 'Loading…');
+    setState('loading', '불러오는 중…');
     el.list.setAttribute('aria-busy', 'true');
     const tag = identity.tag();
     const [top, me] = await Promise.all([board.top(B.device), tag ? board.me(tag) : Promise.resolve(null)]);
@@ -396,7 +396,7 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
       frag.appendChild(li);
     }
     el.list.appendChild(frag);
-    if (!entries.length) setState('empty', B.device === 'all' ? 'No runs yet. Be the first.' : `No ${B.device} runs yet.`);
+    if (!entries.length) setState('empty', B.device === 'all' ? '아직 기록이 없습니다. 첫 번째가 되어 보세요.' : `아직 ${B.device === 'desktop' ? '데스크톱' : '휴대폰'} 기록이 없습니다.`);
     else setState('ok', '');
     // the player's own row: highlighted in the list, or pinned under it when outside the top 100
     if (!mine && B.me && B.me.best && B.me.rank && B.device === 'all') {
@@ -447,9 +447,9 @@ export function createLeaderboard(G, { menus, endScreen, board, identity }) {
   }
 
   menus.setScreen('board', build);
-  menus.addMenuRow('title', { label: 'Leaderboard', hint: 'Top 100', onClick: () => openBoard(), at: 1 });
-  menus.addMenuRow('paused', { label: 'Leaderboard', hint: 'Top 100', onClick: () => openBoard() });
-  const boardRowEnd = menuRow('Leaderboard', 'Top 100', () => openBoard());
+  menus.addMenuRow('title', { label: '리더보드', hint: '상위 100', onClick: () => openBoard(), at: 1 });
+  menus.addMenuRow('paused', { label: '리더보드', hint: '상위 100', onClick: () => openBoard() });
+  const boardRowEnd = menuRow('리더보드', '상위 100', () => openBoard());
   boardRowEnd.hidden = true;
   if (endScreen && endScreen.addAction) endScreen.addAction(boardRowEnd);
 

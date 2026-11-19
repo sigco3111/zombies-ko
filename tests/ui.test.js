@@ -11,21 +11,21 @@ describe('ui format helpers', () => {
     expect(formatPoints(undefined)).toBe('0');
   });
   it('builds the interact prompt', () => {
-    expect(promptString({ label: 'Ammo', cost: 250 })).toBe('Press F — Ammo · 250');
-    expect(promptString({ label: 'Diner', cost: 1500 })).toBe('Press F — Diner · 1 500');
-    expect(promptString({ label: 'Door', cost: 0 })).toBe('Press F — Door');
+    expect(promptString({ label: 'Ammo', cost: 250 })).toBe('F 누르기 — Ammo · 250');
+    expect(promptString({ label: 'Diner', cost: 1500 })).toBe('F 누르기 — Diner · 1 500');
+    expect(promptString({ label: 'Door', cost: 0 })).toBe('F 누르기 — Door');
     expect(promptString(null)).toBe('');
     // a door that cannot be bought offers no key and no price
-    expect(promptString({ kind: 'lockedDoor', label: 'Diner', cost: 750 })).toBe('Diner — Locked');
+    expect(promptString({ kind: 'lockedDoor', label: 'Diner', cost: 750 })).toBe('Diner — 잠겨 있습니다');
   });
   it('maps purchase refusals to copy', () => {
-    expect(denyText('points')).toBe('Not enough points');
-    expect(denyText('full')).toBe('Ammo full');
-    expect(denyText('locked')).toBe('Locked');
-    expect(denyText('weird')).toBe('Unavailable');
+    expect(denyText('points')).toBe('점수가 부족합니다');
+    expect(denyText('full')).toBe('탄약이 가득 찼습니다');
+    expect(denyText('locked')).toBe('잠겨 있습니다');
+    expect(denyText('weird')).toBe('사용할 수 없습니다');
   });
   it('reads ammo defensively', () => {
-    expect(ammoView(undefined)).toEqual({ mag: null, reserve: null, name: 'Pistol' });
+    expect(ammoView(undefined)).toEqual({ mag: null, reserve: null, name: '권총' });
     expect(ammoView({ ammo: { mag: 9, reserve: 48 }, name: 'Revolver' })).toEqual({ mag: 9, reserve: 48, name: 'Revolver' });
     expect(ammoView({ ammo: {} }).mag).toBeNull();
   });
@@ -85,32 +85,32 @@ describe('title camera ownership', () => {
 describe('prompt copy per device', () => {
   const ammo = { kind: 'wallAmmo', label: 'Ammo', cost: 250 };
   it('names the on-screen button on touch', () => {
-    expect(promptString(ammo, 'touch')).toBe('Tap BUY: Ammo — 250');
-    expect(promptString(ammo)).toBe('Press F — Ammo · 250');
-    expect(promptString({ kind: 'power', label: 'Power', cost: 0 }, 'touch')).toBe('Tap USE: Power');
-    expect(promptString({ kind: 'door', label: 'Diner', cost: 0 }, 'touch')).toBe('Tap OPEN: Diner');
+    expect(promptString(ammo, 'touch')).toBe('구매 탭: Ammo — 250');
+    expect(promptString(ammo)).toBe('F 누르기 — Ammo · 250');
+    expect(promptString({ kind: 'power', label: 'Power', cost: 0 }, 'touch')).toBe('사용 탭: Power');
+    expect(promptString({ kind: 'door', label: 'Diner', cost: 0 }, 'touch')).toBe('열기 탭: Diner');
   });
   it('says Hold for a hold, in both modes', () => {
     const search = { kind: 'search', label: 'Crate', cost: 0, hold: 2 };
-    expect(promptString(search, 'touch')).toBe('Hold SEARCH: Crate');
-    expect(promptString(search)).toBe('Hold F — Crate');
-    expect(promptString({ kind: 'boards', label: 'Boards', cost: 0, hold: 0.6 }, 'touch')).toBe('Hold REPAIR: Boards');
+    expect(promptString(search, 'touch')).toBe('조사 길게 누르기: Crate');
+    expect(promptString(search)).toBe('F 길게 누르기 — Crate');
+    expect(promptString({ kind: 'boards', label: 'Boards', cost: 0, hold: 0.6 }, 'touch')).toBe('수리 길게 누르기: Boards');
   });
   it('a locked door has no key on either device', () => {
-    expect(promptString({ kind: 'lockedDoor', label: 'Diner', cost: 750 }, 'touch')).toBe('Diner — Locked');
+    expect(promptString({ kind: 'lockedDoor', label: 'Diner', cost: 750 }, 'touch')).toBe('Diner — 잠겨 있습니다');
     expect(promptParts({ kind: 'lockedDoor', label: 'Diner' }, 'touch').key).toBeNull();
   });
   it('the verb on the interact button', () => {
-    expect(interactVerb(ammo)).toBe('BUY');
-    expect(interactVerb({ kind: 'search' })).toBe('SEARCH');
-    expect(interactVerb(null)).toBe('USE');
+    expect(interactVerb(ammo)).toBe('구매');
+    expect(interactVerb({ kind: 'search' })).toBe('조사');
+    expect(interactVerb(null)).toBe('사용');
   });
   it('keyLabel gives the key on a keyboard and the button on touch', () => {
     expect(keyLabel('interact')).toBe('F');
     expect(keyLabel('reload')).toBe('R');
-    expect(keyLabel('reload', true)).toBe('RELOAD');
-    expect(keyLabel('interact', true, ammo)).toBe('BUY');
-    expect(keyLabel('interact', true)).toBe('USE');
+    expect(keyLabel('reload', true)).toBe('재장전');
+    expect(keyLabel('interact', true, ammo)).toBe('구매');
+    expect(keyLabel('interact', true)).toBe('사용');
   });
   it('the controls card lists every action', () => {
     const ids = CONTROLS.map((c) => c.id);
@@ -259,10 +259,10 @@ describe('settings', () => {
 
 describe('quality labels', () => {
   it('maps the real tier, not the original name', () => {
-    expect(qualityLabel('mobile', true)).toBe('Auto (Phone)');
-    expect(qualityLabel('mobile', false)).toBe('Phone');
-    expect(qualityLabel('high', true)).toBe('Auto (High)');
-    expect(qualityLabel('low', false)).toBe('Low');
+    expect(qualityLabel('mobile', true)).toBe('자동 (휴대폰)');
+    expect(qualityLabel('mobile', false)).toBe('휴대폰');
+    expect(qualityLabel('high', true)).toBe('자동 (높음)');
+    expect(qualityLabel('low', false)).toBe('낮음');
   });
   it('asks for a second tap before a phone leaves Auto or Phone for a heavier tier', () => {
     expect(needsQualityConfirm('auto', 'low', true)).toBe(true);

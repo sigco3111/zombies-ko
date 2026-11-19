@@ -1,7 +1,8 @@
 // The credit line: title screen and end screen, small, in the menus' mono type. The title also
 // carries the source link. Links open a new tab; text is set with textContent only.
-export const CREDIT = { lead: 'Built by Fable 5.2, prompted by ', name: 'Ethan', href: 'https://x.com/ethanplusai' };
-export const SOURCE = { text: 'Source on GitHub', href: 'https://github.com/ethanplusai/zombies' };
+export const CREDIT = { lead: 'Fable 5.2 제작 · 프롬프트: ', name: 'Ethan', href: 'https://x.com/ethanplusai' };
+export const SOURCE = { text: '원작 소스 (GitHub)', href: 'https://github.com/ethanplusai/zombies' };
+export const KOREAN = { text: '한글판', href: 'https://github.com/sigco3111/zombies-ko' };
 
 const link = (cls, text, href) => {
   const a = document.createElement('a');
@@ -26,7 +27,11 @@ export function createCredit({ source = false } = {}) {
     dot.className = 'dot';
     dot.textContent = '·';
     dot.setAttribute('aria-hidden', 'true');
-    p.append(dot, link('gs-lk-link src', SOURCE.text, SOURCE.href));
+    const dot2 = document.createElement('span');
+    dot2.className = 'dot';
+    dot2.textContent = '·';
+    dot2.setAttribute('aria-hidden', 'true');
+    p.append(dot, link('gs-lk-link src', SOURCE.text, SOURCE.href), dot2, link('gs-lk-link src', KOREAN.text, KOREAN.href));
   }
   return p;
 }

@@ -28,7 +28,7 @@ function showOverlay(id, title, detail, withReload) {
   el.append(h, p);
   if (withReload) {
     const b = document.createElement('button');
-    b.textContent = 'Reload';
+    b.textContent = '새로고침';
     b.style.cssText = 'margin-top:6px;padding:10px 22px;font:inherit;color:#1d0503;background:#ff4a3d;border:0;border-radius:4px;cursor:pointer;';
     b.addEventListener('click', () => window.location.reload());
     el.append(b);
@@ -43,8 +43,8 @@ export function createRenderer(G) {
   // The default framebuffer only ever receives the final fullscreen pass: no depth, stencil or MSAA.
   const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'high-performance' });
   if (!gl || !gl.getExtension('EXT_color_buffer_float')) {
-    showOverlay('gfx-unsupported', 'This game needs WebGL2',
-      'Your browser or graphics driver does not provide WebGL2 with floating-point render targets. Try a current version of Chrome, and check that hardware acceleration is turned on.', false);
+    showOverlay('gfx-unsupported', '이 게임에는 WebGL2가 필요합니다',
+      '이 브라우저나 그래픽 드라이버는 부동소수점 렌더 타깃이 있는 WebGL2를 지원하지 않습니다. 최신 Chrome을 사용하고 하드웨어 가속이 켜져 있는지 확인하세요.', false);
     throw new Error('WebGL2 with float render targets is unavailable');
   }
 
@@ -72,7 +72,7 @@ export function createRenderer(G) {
     clearTimeout(lostTimer);
     lostTimer = setTimeout(() => {
       lostTimer = 0;
-      showOverlay('gfx-lost', 'Graphics context lost', 'The browser took the graphics device away from this page. Reload to continue.', true);
+      showOverlay('gfx-lost', '그래픽 컨텍스트 손실', '브라우저가 이 페이지의 그래픽 장치를 회수했습니다. 새로고침하면 계속할 수 있습니다.', true);
     }, RESTORE_WAIT_MS);
   });
   // Registered after three's own listener, so its state is already rebuilt when this runs.

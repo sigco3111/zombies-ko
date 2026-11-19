@@ -41,31 +41,31 @@ function aim(p, buf) {
 
 // objective(G, out?, tbuf?) -> { text, target }. `out` and `tbuf` are reused by the view; a plain call allocates.
 export function objective(G, out, tbuf) {
-  const o = out || { text: 'Survive', target: null };
-  o.text = 'Survive'; o.target = null;
+  const o = out || { text: '생존하세요', target: null };
+  o.text = '생존하세요'; o.target = null;
   if (!G) return o;
   const game = G.game || {};
   const d = game.director;
   const n = Math.max(1, game.round || (d && d.n) || 1);
-  if (d && d.boss) { const b = bruteAlive(G); if (b) { o.text = 'Bring down the brute'; o.target = aim(b.pos, tbuf); return o; } }
+  if (d && d.boss) { const b = bruteAlive(G); if (b) { o.text = '거구를 쓰러뜨리세요'; o.target = aim(b.pos, tbuf); return o; } }
   // the last few, once everything has spawned (round:straggler announces the same moment from the zombie side)
   if (d && d.phase === 'active' && d.total > 0 && d.spawned >= d.total && d.alive > 0 && d.alive <= 2) {
-    o.text = d.alive === 1 ? 'Find the last one' : `Find the last ${d.alive}`;
+    o.text = d.alive === 1 ? '마지막 한 마리를 찾으세요' : `남은 ${d.alive}마리를 찾으세요`;
     const z = nearestAlive(G);
     const sg = G.hints && G.hints.straggler;
     o.target = aim(z ? z.pos : sg && sg.pos, tbuf);
     return o;
   }
-  if (d && d.phase === 'lull') { o.text = `Round ${n} cleared: restock (${Math.max(0, Math.ceil(d.timer || 0))}s)`; return o; }
-  if (noAmmoAnywhere(G)) { const w = wallTarget(G); o.text = 'Out of ammo: buy at the wall'; o.target = aim(w && w.pos, tbuf); return o; }
+  if (d && d.phase === 'lull') { o.text = `${n}라운드 클리어: 재정비 (${Math.max(0, Math.ceil(d.timer || 0))}초)`; return o; }
+  if (noAmmoAnywhere(G)) { const w = wallTarget(G); o.text = '탄약 없음: 벽에서 구매하세요'; o.target = aim(w && w.pos, tbuf); return o; }
   const door = nextDoor(G);
   const afford = !!door && Number.isFinite(game.points) && game.points >= door.cost;
   const power = G.level && G.level.power;
-  if (afford && !anyDoorOpen(G)) { o.text = `Open the ${doorName(door)} — ${door.cost}`; o.target = aim(door.pos, tbuf); return o; }
-  if (anyDoorOpen(G) && power && !power.on) { o.text = 'Find the power switch in the garage'; o.target = aim(power.pos, tbuf); return o; }
-  if (afford) { o.text = `Open the ${doorName(door)} — ${door.cost}`; o.target = aim(door.pos, tbuf); return o; }
-  if (d && d.total > 0) { o.text = `Survive round ${n} — ${Math.max(0, d.total - d.spawned + (d.alive || 0))} left`; return o; }
-  if (d) o.text = `Survive round ${n}`;
+  if (afford && !anyDoorOpen(G)) { o.text = `${doorName(door)} 여세요 — ${door.cost}`; o.target = aim(door.pos, tbuf); return o; }
+  if (anyDoorOpen(G) && power && !power.on) { o.text = '차고에서 전원 스위치를 찾으세요'; o.target = aim(power.pos, tbuf); return o; }
+  if (afford) { o.text = `${doorName(door)} 여세요 — ${door.cost}`; o.target = aim(door.pos, tbuf); return o; }
+  if (d && d.total > 0) { o.text = `라운드 ${n} 생존 — ${Math.max(0, d.total - d.spawned + (d.alive || 0))}마리 남음`; return o; }
+  if (d) o.text = `라운드 ${n} 생존`;
   return o;
 }
 

@@ -21,7 +21,7 @@ describe('mode()', () => {
     expect(mode({ ...base, state: 'paused' })).toBe('off');
     expect(mode({ ...base, state: 'dead' })).toBe('off');
   });
-  it('the words', () => expect(TURN_TEXT).toBe('Turn your phone sideways for a bigger view'));
+  it('the words', () => expect(TURN_TEXT).toBe('휴대폰을 가로로 돌리면 더 크게 보입니다'));
 });
 
 // A minimal DOM: just what orient.js touches.

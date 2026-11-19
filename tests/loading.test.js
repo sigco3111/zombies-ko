@@ -22,30 +22,30 @@ describe('loading screen tips', () => {
   it('quotes the tuning, not made-up numbers', () => {
     const e = tuning.economy, w = tuning.world;
     const text = all(false);
-    expect(text).toContain(`hit pays ${e.points.hit} points, a kill ${e.points.kill}, a headshot kill ${e.points.headshotKill}`);
-    expect(text).toContain(`Knife kills pay ${e.points.meleeKill}`);
-    expect(text).toContain(`weapon box is ${e.box.cost}`);
-    expect(text).toContain(`within ${e.box.offer} seconds`);
-    expect(text).toContain(`stronger for ${e.bench.cost}`);
-    expect(text).toContain(`diner is ${w.doors.d1}`);
-    expect(text).toContain(`${w.boards.repairPoints} points a board, up to ${w.boards.repairCapPerRound} a round`);
-    expect(text).toContain(`Pistol ammo is ${e.wallAmmo.cost}`);
-    expect(text).toContain(`Pistol ammo is ${e.crateAmmo.pistol}`);
-    expect(text).toMatch(/ammo crate .*fills whatever gun you're holding/);
-    expect(text).toContain(`for ${e.powerups.ttl} seconds`);
-    expect(text).toContain(`You can wear ${['zero', 'one', 'two', 'three', 'four'][tuning.touch.maxPlates]}`);
-    expect(text).toMatch(/can't shoot while you're sprinting/);
+    expect(text).toContain(`한 발 맞출 때마다 ${e.points.hit}점, 처치 ${e.points.kill}점, 헤드샷 처치 ${e.points.headshotKill}점`);
+    expect(text).toContain(`칼로 처치하면 ${e.points.meleeKill}점`);
+    expect(text).toContain(`무기 상자는 ${e.box.cost}점에`);
+    expect(text).toContain(`${e.box.offer}초 안에`);
+    expect(text).toContain(`${e.bench.cost}점에 어떤 총이든 강해집니다`);
+    expect(text).toContain(`식당은 ${w.doors.d1}점`);
+    expect(text).toContain(`판자 하나에 ${w.boards.repairPoints}점, 라운드당 최대 ${w.boards.repairCapPerRound}점`);
+    expect(text).toContain(`권총 탄약은 ${e.wallAmmo.cost}점`);
+    expect(text).toContain(`권총 탄약은 ${e.crateAmmo.pistol}점`);
+    expect(text).toMatch(/탄약 상자는 손에 든 총의 탄약을 채워줍니다/);
+    expect(text).toContain(`${e.powerups.ttl}초 동안 빛납니다`);
+    expect(text).toContain(`${['영', '한', '두', '세', '네'][tuning.touch.maxPlates]} 개까지 착용할 수 있습니다`);
+    expect(text).toMatch(/달리는 동안은 쏠 수 없습니다/);
   });
 
   it('names keys on a keyboard and buttons on touch', () => {
-    expect(all(false)).toMatch(/press V/);
-    expect(all(false)).toMatch(/Hold F to search/);
-    expect(all(false)).toMatch(/Hold Shift/);
+    expect(all(false)).toMatch(/V를 누르세요/);
+    expect(all(false)).toMatch(/F를 길게 눌러 조사하세요/);
+    expect(all(false)).toMatch(/Shift를 누르면/);
     const touch = all(true);
-    expect(touch).not.toMatch(/\b(press V|Hold F|Shift)\b/);
-    expect(touch).toMatch(/Hold SEARCH/);
-    expect(touch).toMatch(/Hold REPAIR/);
-    expect(touch).toMatch(/Push the stick/);
+    expect(touch).not.toMatch(/(V를 누르세요|F를 길게 눌러|Shift)/);
+    expect(touch).toMatch(/조사를 길게/);
+    expect(touch).toMatch(/수리를 길게/);
+    expect(touch).toMatch(/스틱을 끝까지/);
   });
 
   it('starts from the clock and walks every tip in turn', () => {
@@ -73,10 +73,9 @@ describe('loading screen build inputs', () => {
   it('index.html carries the link-preview meta and the hooks main.js and the build need', () => {
     const html = readFileSync(resolve(root, 'src/index.html'), 'utf8');
     for (const s of [
-      'property="og:image" content="https://zombies.ethanplus.ai/og.jpg"', 'property="og:image:width" content="1200"',
+      'property="og:image" content="https://sigco3111.github.io/zombies-ko/og.jpg"', 'property="og:image:width" content="1200"',
       'property="og:image:height" content="630"', 'name="twitter:card" content="summary_large_image"',
-      'name="twitter:site" content="@ethanplusai"', 'name="twitter:creator" content="@ethanplusai"',
-      'property="og:url" content="https://zombies.ethanplus.ai/"', 'name="theme-color"', 'rel="icon" type="image/svg+xml" href="data:',
+      'property="og:url" content="https://sigco3111.github.io/zombies-ko/"', 'name="theme-color"', 'rel="icon" type="image/svg+xml" href="data:',
       'id="boot"', 'id="boot-bar"', 'id="boot-label"', '<!--LOADING_CSS-->', '<!--LOADING_JS-->', '<!--INLINE_JS-->',
     ]) expect(html).toContain(s);
   });

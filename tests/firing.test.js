@@ -327,7 +327,7 @@ describe('G.weapon', () => {
     const w = createWeapon(m.G);
     restore();
     m.G.weapon = w;
-    expect(w.name).toBe('Wren 9');
+    expect(w.name).toBe('렌 9');
     w.update(DT);
     expect(m.log).toEqual([]);
     m.pressed.add('fire');

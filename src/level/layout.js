@@ -75,7 +75,7 @@ export const fenceCuts = (name, start) => ({
 
 // the forecourt's own (the doors, the power and the boards are the world's: world.js)
 export const interactables = [
-  { id: 'ammo-store', kind: 'wallAmmo', pos: [6.02, 1.3, -19.5], radius: 1.6, cost: 250, label: 'Ammo', zone: 'forecourt' },
+  { id: 'ammo-store', kind: 'wallAmmo', pos: [6.02, 1.3, -19.5], radius: 1.6, cost: 250, label: '탄약', zone: 'forecourt' },
 ];
 
 // cam: [x, y, z, yaw, pitch]

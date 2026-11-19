@@ -76,7 +76,7 @@ export function createGame(G) {
       const id = wallWeaponOf(wb);
       if (!id || has(wb.id)) continue;
       const owned = () => !!(G.weapon && typeof G.weapon.has === 'function' && G.weapon.has(id));
-      const name = WEAPONS[id].name, ammoName = `${name} ammo`; // (read every frame: no new strings)
+      const name = WEAPONS[id].name, ammoName = `${name} 탄약`; // (read every frame: no new strings)
       list.push({
         id: wb.id, kind: 'wallWeapon', weapon: id, pos: wb.pos, radius: 1.6, zone: wb.zone,
         get label() { return owned() ? ammoName : name; },
@@ -91,7 +91,7 @@ export function createGame(G) {
           if (boxZoneFor !== box.spot) { boxZoneFor = box.spot; const s = L0.boxSpots.find((q) => q.id === box.spot); boxZone = s ? s.zone : null; }
           return boxZone;
         },
-        get label() { return box.state === 'offering' && box.offer ? WEAPONS[box.offer].name : 'Weapon box'; },
+        get label() { return box.state === 'offering' && box.offer ? WEAPONS[box.offer].name : '무기 상자'; },
         get cost() { return box.state === 'idle' ? TE.box.cost : 0; },
         enabled: () => box.state === 'idle' || box.state === 'offering',
       });
@@ -99,7 +99,7 @@ export function createGame(G) {
     if (L0.benchSpot && !has('bench')) {
       list.push({
         id: 'bench', kind: 'bench', pos: L0.benchSpot.pos, radius: 1.6, zone: L0.benchSpot.zone, cost: TE.bench.cost,
-        label: 'Upgrade', needsPower: true,
+        label: '업그레이드', needsPower: true,
       });
     }
     for (const m of L0.machineSpots || []) {

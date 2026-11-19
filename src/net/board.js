@@ -203,18 +203,18 @@ export function createBoardClient(api, { now = () => Date.now() } = {}) {
 
 export function errorText(r) {
   const e = r && r.error;
-  if (e === 'taken') return 'That tag is taken. Try another.';
+  if (e === 'taken') return '이미 사용 중인 태그입니다. 다른 태그를 쓰세요.';
   if (e === 'invalid_tag') {
-    if (r.reason === 'tag_length') return 'Use 3 to 16 characters.';
-    if (r.reason === 'tag_chars' || r.reason === 'tag_type') return 'Use letters, numbers, spaces, - or _.';
-    return 'That tag is not allowed. Try another.';
+    if (r.reason === 'tag_length') return '3~16자로 입력하세요.';
+    if (r.reason === 'tag_chars' || r.reason === 'tag_type') return '영문자, 숫자, 공백, -, _ 만 사용하세요.';
+    return '사용할 수 없는 태그입니다. 다른 태그를 쓰세요.';
   }
-  if (e === 'rate_limited') return r.scope === 'global' ? 'A lot of new players right now. Try again in a few minutes.' : 'Too many tries. Wait a few minutes and try again.';
-  if (e === 'bad_recovery') return 'That tag and code do not match.';
-  if (e === 'bad_secret') return 'This tag moved to another device. Use your recovery code on the Leaderboard.';
-  if (e === 'not_found') return 'No player with that tag.';
-  if (e === 'offline' || e === 'server' || e === 'disabled') return 'Couldn’t reach the leaderboard. Try again.';
-  return 'Something went wrong. Try again.';
+  if (e === 'rate_limited') return r.scope === 'global' ? '지금 새 플레이어가 많습니다. 몇 분 후에 다시 시도하세요.' : '시도가 너무 많습니다. 몇 분 기다렸다가 다시 시도하세요.';
+  if (e === 'bad_recovery') return '태그와 코드가 일치하지 않습니다.';
+  if (e === 'bad_secret') return '이 태그는 다른 기기로 옮겨졌습니다. 리더보드에서 복구 코드를 사용하세요.';
+  if (e === 'not_found') return '해당 태그의 플레이어가 없습니다.';
+  if (e === 'offline' || e === 'server' || e === 'disabled') return '리더보드에 연결할 수 없습니다. 다시 시도하세요.';
+  return '문제가 생겼습니다. 다시 시도하세요.';
 }
 
 // ---------------------------------------------------------------- mock (board=mock)

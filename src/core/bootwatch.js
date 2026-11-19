@@ -19,14 +19,14 @@ export const NOTE_MS = 10000;
 export const AFTER_READY_MS = 5000;
 export const BEAT_MS = 25;
 export const LOST_WAIT_MS = 3300; // a little after the renderer's own wait (renderer.js RESTORE_WAIT_MS)
-export const NOTE_TEXT = 'First load can take a minute or two on some PCs while graphics are prepared. It is much faster next time.';
+export const NOTE_TEXT = '그래픽을 준비하는 동안 첫 로딩은 PC에 따라 1~2분 걸릴 수 있습니다. 다음부터는 훨씬 빠릅니다.';
 const ERRORS_SHOWN = 6;
 const ERROR_CHARS = 600;
 const SHADER_ERROR_CHARS = 1500;
 
 export function warmLabel(s) {
-  if (!s || !s.total) return 'Preparing graphics';
-  return `Preparing graphics ${Math.min(s.ready, s.total)} / ${s.total}`;
+  if (!s || !s.total) return '그래픽 준비 중';
+  return `그래픽 준비 중 ${Math.min(s.ready, s.total)} / ${s.total}`;
 }
 
 // Longest gap between heartbeats, split at window.__ready: a gap belongs to the side it began on.
@@ -69,7 +69,7 @@ const secs = (ms) => (ms / 1000).toFixed(1);
 // stages: [[name, ms]], programs: {ready, total, mode} | null, lost, restored, stall: {ms, stage} | null,
 // errors: [string], failed: [stage] }.
 export function buildDetails(s) {
-  const lines = ['Graveyard Shift: loading details'];
+  const lines = ['그레이브야드 시프트: 로딩 상세 정보'];
   lines.push(`When: ${s.when || '?'}, ${secs(s.elapsedMs || 0)} s after the page opened`);
   lines.push(`Browser: ${s.ua || 'unknown'}`);
   lines.push(`Graphics: ${s.gpu || 'unknown'}`);
@@ -160,8 +160,8 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
   function copyText(text, button) {
     const done = (ok) => {
       if (!button) return;
-      button.textContent = ok ? 'Copied' : 'Select the text below and copy it';
-      win.setTimeout(() => { button.textContent = 'Copy details'; }, 2500);
+      button.textContent = ok ? '복사됨' : '아래 텍스트를 선택해 복사하세요';
+      win.setTimeout(() => { button.textContent = '상세 정보 복사'; }, 2500);
     };
     const fallback = () => {
       try {
@@ -189,17 +189,17 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
     const pre = el('pre', 'gs-bw-details');
     pre.hidden = true;
     if (withReload) {
-      const r = el('button', 'gs-bw-btn gs-bw-primary', 'Reload');
+      const r = el('button', 'gs-bw-btn gs-bw-primary', '새로고침');
       r.type = 'button';
       r.addEventListener('click', () => win.location.reload());
       row.append(r);
     }
-    const copy = el('button', 'gs-bw-btn', 'Copy details');
+    const copy = el('button', 'gs-bw-btn', '상세 정보 복사');
     copy.type = 'button';
     copy.addEventListener('click', () => { const text = details(); pre.textContent = text; pre.hidden = false; copyText(text, copy); });
-    const show = el('button', 'gs-bw-btn gs-bw-quiet', 'Show details');
+    const show = el('button', 'gs-bw-btn gs-bw-quiet', '상세 정보 보기');
     show.type = 'button';
-    show.addEventListener('click', () => { pre.textContent = details(); pre.hidden = !pre.hidden; show.textContent = pre.hidden ? 'Show details' : 'Hide details'; });
+    show.addEventListener('click', () => { pre.textContent = details(); pre.hidden = !pre.hidden; show.textContent = pre.hidden ? '상세 정보 보기' : '상세 정보 숨기기'; });
     row.append(copy, show);
     return [row, pre];
   }
@@ -254,7 +254,7 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
     boxLive = live ? p : null;
     const [row, pre] = detailsBlock(false);
     if (dismiss) {
-      const x = el('button', 'gs-bw-btn gs-bw-quiet', 'Dismiss');
+      const x = el('button', 'gs-bw-btn gs-bw-quiet', '닫기');
       x.type = 'button';
       x.addEventListener('click', () => { if (box) box.remove(); box = null; });
       row.append(x);
@@ -265,8 +265,8 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
   }
   const slowText = () => {
     const sec = Math.round((now() - t0) / 1000);
-    const what = S.stage === 'shaders' || S.stage === 'shaders (tier)' ? warmLabel(S.programs) : `Loading: ${S.stage || 'starting'}`;
-    return `${what}. ${sec} s so far. The game keeps loading; if it stays stuck, copy the details below for a bug report.`;
+    const what = S.stage === 'shaders' || S.stage === 'shaders (tier)' ? warmLabel(S.programs) : `불러오는 중: ${S.stage || '시작'}`;
+    return `${what}. ${sec}초 경과. 계속 불러오는 중입니다. 계속 멈춰 있으면 아래 상세 정보를 복사해 버그 신고에 사용하세요.`;
   };
   const liveTick = win.setInterval(() => { if (boxLive && box && boxKind === 'slow') boxLive.textContent = slowText(); if (S.ready) win.clearInterval(liveTick); }, 1000);
 
@@ -289,7 +289,7 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
 
   later(() => {
     if (S.ready || S.fatal) return;
-    showBox('slow', 'Still loading', slowText(), { live: slowText });
+    showBox('slow', '아직 불러오는 중', slowText(), { live: slowText });
     logDetails('still loading');
     const again = () => { if (S.ready || S.fatal) return; logDetails('still loading'); later(again, LOG_EVERY_MS); };
     later(again, LOG_EVERY_MS);
@@ -308,7 +308,7 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
     fail(name, err) {
       S.failed.push(name);
       const msg = err && err.message ? err.message : String(err);
-      showBox('stage', 'Part of the game failed to start', `${name}: ${msg}. The game may not work properly. Reloading usually fixes it.`, { dismiss: true });
+      showBox('stage', '게임의 일부를 시작하지 못했습니다', `${name}: ${msg}. 게임이 제대로 동작하지 않을 수 있습니다. 새로고침하면 보통 해결됩니다.`, { dismiss: true });
     },
     // the renderer is up: read the device once and watch its canvas for a lost context
     attach(renderer) {
@@ -324,7 +324,7 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
         if (S.ready) return;
         later(() => {
           if (!S.lost || S.ready) return;
-          showFailure('Graphics context lost', 'The browser took the graphics device away while the game was loading. Reload to try again.');
+          showFailure('그래픽 컨텍스트 손실', '로딩 중 브라우저가 그래픽 장치를 빼앗았습니다. 새로고침해서 다시 시도하세요.');
         }, LOST_WAIT_MS);
       });
       canvas.addEventListener('webglcontextrestored', () => {
@@ -368,7 +368,7 @@ export function createBootWatch({ win = window, doc = document, now = () => perf
     },
     fatal(err) {
       S.fatal = err || true;
-      showFailure('The game could not finish loading', 'Something went wrong while the game was starting. Reloading usually fixes it; if not, copy the details for a bug report.');
+      showFailure('게임 로딩을 끝내지 못했습니다', '게임을 시작하는 중 문제가 생겼습니다. 새로고침하면 보통 해결됩니다. 그래도 안 되면 상세 정보를 복사해 버그 신고에 사용하세요.');
     },
     details,
   };

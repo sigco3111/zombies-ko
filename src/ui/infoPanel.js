@@ -15,7 +15,7 @@ const kids = (parent, ...els) => { for (const e of els) parent.appendChild(e); r
 // The two control columns, keyboard and touch. CSS puts the active device's column first.
 export function controlsColumns() {
   const cols = h('div', 'gs-card-cols');
-  for (const [cls, title, field] of [['kb', 'Keyboard', 'key'], ['tc', 'Touch', 'touch']]) {
+  for (const [cls, title, field] of [['kb', '키보드', 'key'], ['tc', '터치', 'touch']]) {
     const col = h('div', `gs-card-col ${cls}`);
     col.appendChild(h('h3', 'gs-card-h', title));
     for (const c of CONTROLS) kids(col, kids(h('div', 'r'), h('span', 'a', c.name), h('span', 'k', c[field])));
@@ -46,7 +46,7 @@ function perksPanel(items) {
     kids(li, kids(h('div', 'gs-itop'), h('h4', 'gs-ih', it.name), h('span', 'gs-icost', `${formatPoints(it.cost)} pts`)), h('p', 'gs-ip', it.text));
     ul.appendChild(li);
   }
-  return kids(h('div'), h('p', 'gs-inote', 'Each one needs the power on. You keep it until you die.'), ul);
+  return kids(h('div'), h('p', 'gs-inote', '모두 전원이 켜져 있어야 합니다. 죽을 때까지 유지됩니다.'), ul);
 }
 
 const STAT_KEYS = ['damage', 'rate', 'mag'];
@@ -60,7 +60,7 @@ function weaponsPanel(groups) {
       const li = h('li', 'gs-iitem gs-weap');
       li.dataset.weapon = w.id;
       const srcs = h('span', 'gs-srcs');
-      srcs.appendChild(h('span', 'gs-sr', 'Found at: '));
+      srcs.appendChild(h('span', 'gs-sr', '획득: '));
       w.sources.forEach((s, i) => { if (i) srcs.appendChild(document.createTextNode(', ')); srcs.appendChild(h('span', `gs-src ${s.kind}`, s.text)); });
       kids(li, kids(h('div', 'gs-itop'), h('h4', 'gs-ih', w.name), srcs), h('p', 'gs-ip', w.text));
       const bars = h('dl', 'gs-bars');
@@ -75,8 +75,8 @@ function weaponsPanel(groups) {
         kids(bars, kids(h('div'), kids(h('dt'), h('span', 'l', s.label), document.createTextNode(' '), h('span', 'v', s.text)), bar));
       }
       li.appendChild(bars);
-      li.appendChild(h('p', 'gs-wup', `Ammo ${formatPoints(w.ammo.stock)}, upgraded ${formatPoints(w.ammo.upgraded)}`));
-      if (w.upgraded) li.appendChild(h('p', 'gs-wup', `Upgraded: ${w.upgraded}`));
+      li.appendChild(h('p', 'gs-wup', `탄약 ${formatPoints(w.ammo.stock)}, 업그레이드 후 ${formatPoints(w.ammo.upgraded)}`));
+      if (w.upgraded) li.appendChild(h('p', 'gs-wup', `업그레이드: ${w.upgraded}`));
       ul.appendChild(li);
     }
     sec.appendChild(ul);
@@ -100,7 +100,7 @@ export function createInfoPanel(content = infoContent()) {
   const el = h('div', 'gs-card gs-info');
   const tablist = h('div', 'gs-tabs');
   tablist.setAttribute('role', 'tablist');
-  tablist.setAttribute('aria-label', 'Game information');
+  tablist.setAttribute('aria-label', '게임 정보');
   const bodies = {
     controls: kids(h('div', 'gs-ctl'), controlsColumns()),
     how: howPanel(content.how),

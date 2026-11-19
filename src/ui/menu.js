@@ -27,7 +27,7 @@ const leaderLine = (cls, left, right) => kids(h('div', cls), left, h('span', 'le
 // The controls card on its own (the Controls screen): two columns, keyboard and touch. CSS puts the active device's column first.
 function controlsCard() {
   const card = h('div', 'gs-card');
-  card.appendChild(h('p', 'gs-eyebrow', 'House rules'));
+  card.appendChild(h('p', 'gs-eyebrow', '조작 안내'));
   card.appendChild(controlsColumns());
   return card;
 }
@@ -53,16 +53,16 @@ export function createMenus(G, root, { settings, actions, sample }) {
   // ---- title ----
   {
     const col = screen('title', 'gs-title');
-    const exit = kids(h('p', 'gs-exit'), h('span', 'tab', 'Exit 114'), h('span', 'sub', 'Nightjar truck stop · Open all night'));
+    const exit = kids(h('p', 'gs-exit'), h('span', 'tab', '114번 출구'), h('span', 'sub', '나이트자 트럭 스톱 · 밤새 영업'));
     const mark = createWordmark({ tag: 'h1' });
-    const premise = h('p', 'gs-premise', 'One truck stop, ten guns, and a night that does not end.');
+    const premise = h('p', 'gs-premise', '트럭 스톱 하나, 총 열 자루, 그리고 끝나지 않는 밤.');
     const list = h('nav', 'gs-list');
-    list.setAttribute('aria-label', 'Main menu');
+    list.setAttribute('aria-label', '메인 메뉴');
     kids(list,
-      row('Play', 'Clock in', () => actions.play(), { auto: true }),
-      row('Settings', 'Picture · Controls · Sound', () => show('settings')));
+      row('플레이', '출근하기', () => actions.play(), { auto: true }),
+      row('설정', '화면 · 조작 · 소리', () => show('settings')));
     if (fullscreenOk) {
-      list.appendChild(row('Full screen', 'Hides the browser bars', () => {
+      list.appendChild(row('전체 화면', '브라우저 창틀을 숨깁니다', () => {
         try { const p = document.documentElement.requestFullscreen?.(); if (p && p.catch) p.catch(() => {}); } catch { /* refused: nothing to do */ }
       }));
     }
@@ -75,11 +75,11 @@ export function createMenus(G, root, { settings, actions, sample }) {
   {
     const col = screen('paused', 'gs-pause');
     const list = h('nav', 'gs-list');
-    list.setAttribute('aria-label', 'Pause menu');
+    list.setAttribute('aria-label', '일시정지 메뉴');
     kids(list,
-      row('Resume', 'Back on shift', () => actions.resume(), { auto: true }),
-      row('Settings', 'Picture · Controls · Sound', () => show('settings')));
-    kids(col, heading('Shift paused', 'On break'), list);
+      row('계속하기', '근무 복귀', () => actions.resume(), { auto: true }),
+      row('설정', '화면 · 조작 · 소리', () => show('settings')));
+    kids(col, heading('일시정지', '휴식 중'), list);
     screens.paused.list = list;
     screens.paused.el.appendChild(kids(h('aside', 'gs-cardwrap'), createInfoPanel().el));
   }
@@ -89,17 +89,17 @@ export function createMenus(G, root, { settings, actions, sample }) {
   {
     const col = screen('dead', 'gs-dead');
     dead.num = h('div', 'gs-bignum', '0');
-    const numWrap = kids(h('div', 'gs-bigwrap'), h('p', 'gs-eyebrow', 'Round reached'), dead.num);
+    const numWrap = kids(h('div', 'gs-bigwrap'), h('p', 'gs-eyebrow', '도달 라운드'), dead.num);
     dead.kills = h('span', 'v');
     dead.points = h('span', 'v');
     dead.best = h('span', 'v');
-    dead.tag = h('span', 'gs-newbest', 'New best');
+    dead.tag = h('span', 'gs-newbest', '신기록');
     const stats = h('div', 'gs-stats-list');
     kids(stats,
-      leaderLine('gs-stat', h('span', 'l', 'Kills'), dead.kills),
-      leaderLine('gs-stat', h('span', 'l', 'Points earned'), dead.points),
-      leaderLine('gs-stat', kids(h('span', 'l'), document.createTextNode('Best round')), kids(h('span', 'vw'), dead.tag, dead.best)));
-    kids(col, heading('Clocked out', 'Shift over'), numWrap, stats, kids(h('nav', 'gs-list'), row('Retry', 'Round 1 · 500 points', () => actions.retry(), { auto: true })));
+      leaderLine('gs-stat', h('span', 'l', '처치'), dead.kills),
+      leaderLine('gs-stat', h('span', 'l', '획득 점수'), dead.points),
+      leaderLine('gs-stat', kids(h('span', 'l'), document.createTextNode('최고 라운드')), kids(h('span', 'vw'), dead.tag, dead.best)));
+    kids(col, heading('퇴근 완료', '근무 종료'), numWrap, stats, kids(h('nav', 'gs-list'), row('다시 하기', '1라운드 · 500점', () => actions.retry(), { auto: true })));
   }
 
   // ---- settings ----
@@ -125,7 +125,7 @@ export function createMenus(G, root, { settings, actions, sample }) {
         b.addEventListener('click', () => {
           // a phone leaving Auto/Phone for a desktop tier: the second tap on the same row confirms
           if (guard && guard(cur(), o.v)) {
-            if (armed !== o.v) { armed = o.v; warn.textContent = `May run slowly on a phone. Tap ${o.label} again to use it.`; return; }
+            if (armed !== o.v) { armed = o.v; warn.textContent = `휴대폰에서는 느려질 수 있습니다. ${o.label}(을)를 한 번 더 누르면 적용됩니다.`; return; }
           }
           armed = null; put(o.v); syncSettings();
         });
@@ -176,36 +176,36 @@ export function createMenus(G, root, { settings, actions, sample }) {
       rows.appendChild(leaderLine(`gs-set ${rowCls}`.trim(), h('span', 'l', label), kids(h('span', 'ctl'), input, out)));
     };
 
-    const { note: qNote, warn: qWarn } = segRow('quality', 'Quality', QUALITIES.map((q) => ({ v: q, label: QUALITY_LABELS[q], cls: q === 'mobile' ? 'gs-only-touch' : '' })), '',
+    const { note: qNote, warn: qWarn } = segRow('quality', '화질', QUALITIES.map((q) => ({ v: q, label: QUALITY_LABELS[q], cls: q === 'mobile' ? 'gs-only-touch' : '' })), '',
       (cur, next) => needsQualityConfirm(cur, next, G.input ? G.input.mode === 'touch' : !!(G.device && G.device.touch)));
-    segRow('resolution', 'Resolution', [{ v: 'auto', label: 'Auto' }, { v: 0.6, label: '60%' }, { v: 0.8, label: '80%' }, { v: 1, label: '100%' }]);
-    segRow('gore', 'Gore', GORE.map((g) => ({ v: g, label: g === 'full' ? 'Full' : 'Reduced' })));
-    slider('sens', 'Sensitivity', (v) => `${v.toFixed(2)}×`, 'gs-only-pointer');
-    slider('touchSens', 'Drag sensitivity', (v) => `${v.toFixed(2)}×`, 'gs-only-touch');
-    const af = segRow('autoFire', 'Auto-fire assist', [{ v: false, label: 'Off' }, { v: true, label: 'On' }], 'gs-only-touch');
-    syncers.push(() => { af.note.textContent = settings.autoFire ? 'Shoots when the crosshair is on one' : ''; });
-    segRow('assist', 'Aim assist', ASSIST_NAMES.map((n, i) => ({ v: i, label: n })), 'gs-only-touch');
-    segRow('lefty', 'Left-handed', [{ v: true, label: 'On' }, { v: false, label: 'Off' }], 'gs-only-touch');
-    slider('fov', 'Field of view', (v) => `${Math.round(v)}°`);
-    slider('volume', 'Volume', (v) => `${Math.round(v * 100)}%`);
+    segRow('resolution', '해상도', [{ v: 'auto', label: '자동' }, { v: 0.6, label: '60%' }, { v: 0.8, label: '80%' }, { v: 1, label: '100%' }]);
+    segRow('gore', '고어 표현', GORE.map((g) => ({ v: g, label: g === 'full' ? '전체' : '약하게' })));
+    slider('sens', '민감도', (v) => `${v.toFixed(2)}×`, 'gs-only-pointer');
+    slider('touchSens', '드래그 민감도', (v) => `${v.toFixed(2)}×`, 'gs-only-touch');
+    const af = segRow('autoFire', '자동 발사 보조', [{ v: false, label: '끔' }, { v: true, label: '켬' }], 'gs-only-touch');
+    syncers.push(() => { af.note.textContent = settings.autoFire ? '조준선이 맞으면 자동으로 발사합니다' : ''; });
+    segRow('assist', '조준 보조', ASSIST_NAMES.map((n, i) => ({ v: i, label: n })), 'gs-only-touch');
+    segRow('lefty', '왼손잡이', [{ v: true, label: '켬' }, { v: false, label: '끔' }], 'gs-only-touch');
+    slider('fov', '시야각', (v) => `${Math.round(v)}°`);
+    slider('volume', '음량', (v) => `${Math.round(v * 100)}%`);
 
     function syncSettings() {
       for (const f of syncers) f();
       for (const [k, s] of Object.entries(sliders)) { s.input.value = settings[k]; s.paint(); }
       const q = G.quality;
-      qWarn.textContent = 'Low, Medium and High may run slowly on phones.';
-      qNote.textContent = q && q.tier ? `Now: ${qualityLabel(q.tier, q.auto)}${settings.autoPending ? ' · Auto runs after this round' : ''}` : '';
+      qWarn.textContent = '낮음, 보통, 높음은 휴대폰에서 느려질 수 있습니다.';
+      qNote.textContent = q && q.tier ? `현재: ${qualityLabel(q.tier, q.auto)}${settings.autoPending ? ' · 자동은 이번 라운드 후 적용' : ''}` : '';
     }
     screens.settings.sync = () => { for (const r of resetters) r(); syncSettings(); };
-    kids(col, heading('Back office', 'Settings'), rows,
-      kids(h('nav', 'gs-list gs-back'), row('Back', '', () => show(backTo || 'title'), { small: true, auto: true })));
+    kids(col, heading('사무실', '설정'), rows,
+      kids(h('nav', 'gs-list gs-back'), row('뒤로', '', () => show(backTo || 'title'), { small: true, auto: true })));
   }
 
   // ---- controls (the card on its own; also what ui=controls stages) ----
   {
     const col = screen('controls', 'gs-controls');
-    kids(col, heading('House rules', 'Controls'), controlsCard(),
-      kids(h('nav', 'gs-list gs-back'), row('Back', '', () => show(backTo || 'title'), { small: true, auto: true })));
+    kids(col, heading('조작 안내', '조작법'), controlsCard(),
+      kids(h('nav', 'gs-list gs-back'), row('뒤로', '', () => show(backTo || 'title'), { small: true, auto: true })));
   }
 
   // A screen another module owns (the end screen replaces 'dead'): build(host, G) -> { update?(dt), show?() }.

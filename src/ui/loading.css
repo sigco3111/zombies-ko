@@ -4,7 +4,7 @@
 #boot {
   --ink: #ece6d6; --dim: #a7a89f; --accent: #ff4a3d; --teal: #17877d; --night: #05070a;
   --display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue Condensed', 'Roboto Condensed', sans-serif;
-  --mono: 'Overpass', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif; /* the UI label face (ui.css --label) */
+  --mono: 'Overpass', 'Noto Sans KR', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif; /* the UI label face (ui.css --label) */
   --u: calc(min(100vh, 56.25vw) / 1080);
   --sl: env(safe-area-inset-left, 0px); --sr: env(safe-area-inset-right, 0px);
   --st: env(safe-area-inset-top, 0px); --sb: env(safe-area-inset-bottom, 0px);

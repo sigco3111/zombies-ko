@@ -339,36 +339,36 @@ describe('the mock API: offline stand-in with the server contract', () => {
 
 describe('errorText: inline copy for every failure', () => {
   it.each([
-    [{ error: 'taken' }, /taken/i], [{ error: 'invalid_tag', reason: 'tag_blocked' }, /not allowed/i], [{ error: 'invalid_tag', reason: 'tag_reserved' }, /not allowed/i],
-    [{ error: 'invalid_tag', reason: 'tag_length' }, /3.+16/], [{ error: 'invalid_tag', reason: 'tag_chars' }, /letters/i],
-    [{ error: 'rate_limited' }, /too many/i], [{ error: 'rate_limited', scope: 'global' }, /lot of new players/i], [{ error: 'offline' }, /couldn.t reach/i],
-    [{ error: 'server' }, /couldn.t reach/i], [{ error: 'bad_recovery' }, /match/i], [{ error: 'whatever' }, /.+/],
+    [{ error: 'taken' }, /사용 중인 태그/], [{ error: 'invalid_tag', reason: 'tag_blocked' }, /사용할 수 없는 태그/], [{ error: 'invalid_tag', reason: 'tag_reserved' }, /사용할 수 없는 태그/],
+    [{ error: 'invalid_tag', reason: 'tag_length' }, /3~16/], [{ error: 'invalid_tag', reason: 'tag_chars' }, /영문자/],
+    [{ error: 'rate_limited' }, /너무 많습니다/], [{ error: 'rate_limited', scope: 'global' }, /새 플레이어/], [{ error: 'offline' }, /연결할 수 없습니다/],
+    [{ error: 'server' }, /연결할 수 없습니다/], [{ error: 'bad_recovery' }, /일치하지 않습니다/], [{ error: 'whatever' }, /.+/],
   ])('%j', (r, re) => { expect(errorText(r)).toMatch(re); });
 });
 
 describe('share text and links', () => {
   it('writes the post with round and kills', () => {
-    expect(shareText({ round: 12, kills: 310 })).toBe('I survived to round 12 of Graveyard Shift — 310 kills. Can you beat it? zombies.ethanplus.ai @ethanplusai');
-    expect(shareText({ round: 1, kills: 1 })).toBe('I survived to round 1 of Graveyard Shift — 1 kill. Can you beat it? zombies.ethanplus.ai @ethanplusai');
-    expect(shareText({ round: 'x', kills: -2 })).toBe('I survived to round 1 of Graveyard Shift — 0 kills. Can you beat it? zombies.ethanplus.ai @ethanplusai');
+    expect(shareText({ round: 12, kills: 310 })).toBe('그레이브야드 시프트(Graveyard Shift)에서 라운드 12까지 생존 — 좀비 310마리 처치. 당신도 해낼 수 있나요? sigco3111.github.io/zombies-ko 원작 @ethanplusai');
+    expect(shareText({ round: 1, kills: 1 })).toBe('그레이브야드 시프트(Graveyard Shift)에서 라운드 1까지 생존 — 좀비 1마리 처치. 당신도 해낼 수 있나요? sigco3111.github.io/zombies-ko 원작 @ethanplusai');
+    expect(shareText({ round: 'x', kills: -2 })).toBe('그레이브야드 시프트(Graveyard Shift)에서 라운드 1까지 생존 — 좀비 0마리 처치. 당신도 해낼 수 있나요? sigco3111.github.io/zombies-ko 원작 @ethanplusai');
   });
   it('always shares the production URL', () => {
-    expect(SHARE_URL).toBe('https://zombies.ethanplus.ai');
-    expect(shareUrl()).toBe('https://zombies.ethanplus.ai');
+    expect(SHARE_URL).toBe('https://sigco3111.github.io/zombies-ko/');
+    expect(shareUrl()).toBe('https://sigco3111.github.io/zombies-ko/');
   });
   it('encodes the X intent', () => {
     const href = intentHref({ round: 12, kills: 310 });
     expect(href.startsWith('https://x.com/intent/post?text=')).toBe(true);
     const u = new URL(href);
     expect(u.searchParams.get('text')).toBe(shareText({ round: 12, kills: 310 }));
-    expect(u.searchParams.get('url')).toBe('https://zombies.ethanplus.ai');
+    expect(u.searchParams.get('url')).toBe('https://sigco3111.github.io/zombies-ko/');
     expect(href).toContain('%E2%80%94'); // the em dash
     expect(href).toContain('%40ethanplusai');
     expect(href).not.toContain(' ');
     expect(href.split('&').length).toBe(2); // the text's own characters are all encoded
   });
   it('copies the text and the link', () => {
-    expect(copyText({ round: 3, kills: 20 })).toBe(`${shareText({ round: 3, kills: 20 })} https://zombies.ethanplus.ai`);
+    expect(copyText({ round: 3, kills: 20 })).toBe(`${shareText({ round: 3, kills: 20 })} https://sigco3111.github.io/zombies-ko/`);
   });
 });
 

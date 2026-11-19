@@ -60,7 +60,7 @@ describe('summary', () => {
     expect(s.seconds).toBeCloseTo(12.25, 1);
     expect(Array.isArray(s.rows)).toBe(true);
     for (const r of s.rows) { expect(typeof r.label).toBe('string'); expect(typeof r.value).toBe('string'); }
-    expect(s.rows.map((r) => r.label)).toContain('Kills');
+    expect(s.rows.map((r) => r.label)).toContain('처치');
   });
 
   it('accuracy is 0 with no shots, never above 1', () => {

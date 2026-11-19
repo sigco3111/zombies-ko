@@ -18,7 +18,7 @@ export function summaryRows(summary) {
   const out = [];
   for (const r of rows) {
     if (!r || r.label === undefined || r.value === undefined || r.value === null) continue;
-    if (/^round reached$/i.test(String(r.label))) continue;
+    if (/^round reached$|^도달 라운드$/i.test(String(r.label))) continue;
     out.push({ label: String(r.label), value: String(r.value) });
   }
   return out;
@@ -27,9 +27,9 @@ export function summaryRows(summary) {
 const SAMPLE = {
   round: 7, newBest: true,
   rows: [
-    { label: 'Round reached', value: '7' }, { label: 'Kills', value: '61' }, { label: 'Headshots', value: '14' }, { label: 'Accuracy', value: '38%' },
-    { label: 'Points earned', value: '5620' }, { label: 'Points spent', value: '5400' }, { label: 'Doors opened', value: '3' },
-    { label: 'Time', value: '11:42' }, { label: 'Best round', value: '7 (new)' },
+    { label: '도달 라운드', value: '7' }, { label: '처치', value: '61' }, { label: '헤드샷', value: '14' }, { label: '명중률', value: '38%' },
+    { label: '획득 점수', value: '5620' }, { label: '사용 점수', value: '5400' }, { label: '연 문', value: '3' },
+    { label: '시간', value: '11:42' }, { label: '최고 라운드', value: '7 (신기록)' },
   ],
 };
 
@@ -51,15 +51,15 @@ export function createEndScreen(G, { menus, staged = false }) {
     host = col;
     col.classList.add('gs-endcol');
     els.num = h('div', 'gs-bignum', '0');
-    els.tag = h('span', 'gs-newbest', 'New best');
+    els.tag = h('span', 'gs-newbest', '신기록');
     els.tag.hidden = true;
     els.rows = h('div', 'gs-endrows');
     els.slot = h('div', 'gs-endslot');
     els.slot.dataset.slot = 'gamertag';
     const head = h('header', 'gs-head');
-    head.append(h('p', 'gs-eyebrow', 'Clocked out'), h('h2', 'gs-h', 'Shift over'));
+    head.append(h('p', 'gs-eyebrow', '퇴근 완료'), h('h2', 'gs-h', '근무 종료'));
     const big = h('div', 'gs-bigwrap');
-    const eb = h('p', 'gs-eyebrow', 'Round reached');
+    const eb = h('p', 'gs-eyebrow', '도달 라운드');
     const numRow = h('div', 'gs-endnum');
     numRow.append(els.num, els.tag);
     big.append(eb, numRow);
@@ -67,10 +67,10 @@ export function createEndScreen(G, { menus, staged = false }) {
     const retry = h('button', 'gs-row');
     retry.type = 'button';
     retry.dataset.autofocus = '1';
-    retry.append(h('span', 'k', 'Retry'), h('span', 'lead'), h('span', 'hint', 'Round 1'));
+    retry.append(h('span', 'k', '다시 하기'), h('span', 'lead'), h('span', 'hint', '1라운드'));
     retry.addEventListener('click', () => { G.game?.restart?.(); G.input?.requestLock?.(); });
     const nav = h('nav', 'gs-list');
-    nav.setAttribute('aria-label', 'End of shift');
+    nav.setAttribute('aria-label', '근무 종료');
     nav.appendChild(retry);
     els.nav = nav;
     const right = h('div', 'gs-endright');

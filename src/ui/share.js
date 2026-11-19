@@ -4,7 +4,7 @@
 // the post and the link on the clipboard from inside the click, with a select-the-text fallback.
 import { track } from '../core/analytics.js';
 
-export const SHARE_URL = 'https://zombies.ethanplus.ai';
+export const SHARE_URL = 'https://sigco3111.github.io/zombies-ko/';
 const INTENT = 'https://x.com/intent/post';
 
 const count = (v, min) => (Number.isFinite(Number(v)) ? Math.max(min, Math.floor(Number(v))) : min);
@@ -12,7 +12,7 @@ const count = (v, min) => (Number.isFinite(Number(v)) ? Math.max(min, Math.floor
 export function shareText({ round, kills } = {}) {
   const n = count(round, 1);
   const k = count(kills, 0);
-  return `I survived to round ${n} of Graveyard Shift — ${k} ${k === 1 ? 'kill' : 'kills'}. Can you beat it? zombies.ethanplus.ai @ethanplusai`;
+  return `그레이브야드 시프트(Graveyard Shift)에서 라운드 ${n}까지 생존 — 좀비 ${k}마리 처치. 당신도 해낼 수 있나요? sigco3111.github.io/zombies-ko 원작 @ethanplusai`;
 }
 export const shareUrl = () => SHARE_URL;
 export const intentHref = (run) => `${INTENT}?text=${encodeURIComponent(shareText(run))}&url=${encodeURIComponent(SHARE_URL)}`;
@@ -24,18 +24,18 @@ const h = (tag, cls, text) => { const e = document.createElement(tag); if (cls) 
 export function createShareBar(G, { where }) {
   let run = null;
   const bar = h('div', 'gs-lk-share');
-  const share = h('a', 'gs-lk-btn primary', 'Share');
+  const share = h('a', 'gs-lk-btn primary', '공유');
   share.target = '_blank';
   share.rel = 'noopener';
   share.href = intentHref({});
-  const copy = h('button', 'gs-lk-btn', 'Copy');
+  const copy = h('button', 'gs-lk-btn', '복사');
   copy.type = 'button';
   const note = h('span', 'gs-lk-sharenote');
   note.setAttribute('aria-live', 'polite');
   const field = h('input', 'gs-lk-copyfield');
   field.readOnly = true;
   field.hidden = true;
-  field.setAttribute('aria-label', 'Post text');
+  field.setAttribute('aria-label', '게시 문구');
   bar.append(share, copy, note, field);
 
   const native = () => {
@@ -61,7 +61,7 @@ export function createShareBar(G, { where }) {
     field.value = text;
     let ok = false;
     try { field.focus({ preventScroll: true }); field.select(); ok = document.execCommand && document.execCommand('copy'); } catch { ok = false; }
-    note.textContent = ok ? 'Copied' : 'Select and copy';
+    note.textContent = ok ? '복사됨' : '선택해서 복사하세요';
   };
   copy.addEventListener('click', () => {
     const text = copyText(run || {});
@@ -69,7 +69,7 @@ export function createShareBar(G, { where }) {
     try {
       const p = navigator.clipboard && navigator.clipboard.writeText(text);
       if (!p || !p.then) { fallback(text); return; }
-      p.then(() => { field.hidden = true; note.textContent = 'Copied'; }, () => fallback(text));
+      p.then(() => { field.hidden = true; note.textContent = '복사됨'; }, () => fallback(text));
     } catch { fallback(text); }
   });
 

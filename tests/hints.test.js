@@ -253,7 +253,7 @@ describe('hints: the table', () => {
     const a = rig({ over: { weapon: { slots: [{ id: 'pistol', mag: 0, reserve: 0 }, null], slot: 0, melee: 'knife' } } });
     a.events.emit('weapon:empty', { weapon: 'pistol' });
     a.hints.update(0.016);
-    expect(a.hints.current().plain).toBe('Out of ammo. Buy at the wall, or press V to knife them');
+    expect(a.hints.current().plain).toBe('탄약이 없습니다. 벽에서 사세요, 또는 V로 칼을 휘두르세요');
     run(a.hints, 9);
     expect(a.hints.current().id).toBe('noAmmo');
     a.events.emit('buy', { item: 'wallAmmo', cost: 250, id: 'ammo-store' });
@@ -263,7 +263,7 @@ describe('hints: the table', () => {
     const b = rig({ touch: true, over: { weapon: { slots: [{ id: 'pistol', mag: 0, reserve: 0 }, null], slot: 0, melee: 'knife' } } });
     b.events.emit('weapon:empty', { weapon: 'pistol' });
     b.hints.update(0.016);
-    expect(b.hints.current().plain).toBe('Out of ammo. Buy at the wall, or tap the melee button');
+    expect(b.hints.current().plain).toBe('탄약이 없습니다. 벽에서 사세요, 또는 melee 버튼 탭');
   });
 
   it('noAmmo stays quiet while the other slot still has ammo', () => {
@@ -277,28 +277,28 @@ describe('hints: the table', () => {
     const k = rig();
     k.events.emit('round:start', { n: 1 });
     k.hints.update(0.016);
-    expect(k.hints.current().plain).toBe('WASD to move, mouse to look');
+    expect(k.hints.current().plain).toBe('WASD로 이동, 마우스로 시점');
     expect(k.hints.current().parts.some((p) => p.key)).toBe(true);
     const t = rig({ touch: true });
     t.events.emit('round:start', { n: 1 });
     t.hints.update(0.016);
-    expect(t.hints.current().plain).toBe('Left thumb moves, a tap there jumps. Drag the right side to look');
+    expect(t.hints.current().plain).toBe('왼쪽 엄지로 이동, 거기를 탭하면 점프. 오른쪽을 드래그하면 시점');
   });
 
   it('copy: Press F / Hold F on keyboard, the button on touch', () => {
     const near = { id: 's-car', kind: 'search', label: 'Search car', pos: [1, 0, 1], radius: 1.6, hold: 1.5, enabled: () => true };
     const mk = (touch) => rig({ touch, over: { level: { interactables: [near] } } });
     const k = mk(false); k.hints.update(0.3);
-    expect(k.hints.current().plain).toBe('Hold F to search the car — once only');
+    expect(k.hints.current().plain).toBe('F를 길게 눌러 Search car 조사 — 한 번만');
     const t = mk(true); t.hints.update(0.3);
-    expect(t.hints.current().plain).toBe('Hold SEARCH. One search per car');
+    expect(t.hints.current().plain).toBe('조사 길게 누르기. Search car당 한 번');
     const wall = { id: 'ammo-store', kind: 'wallAmmo', label: 'Ammo', cost: 250, pos: [1, 0, 1], enabled: () => true };
     const w = rig({ touch: false, over: { game: { state: 'playing', points: 500, focus: wall }, level: { interactables: [wall] } } });
     w.hints.update(0.3);
-    expect(w.hints.current().plain).toBe('Press F to buy here');
+    expect(w.hints.current().plain).toBe('F를 눌러 여기서 구매');
     const wt = rig({ touch: true, over: { game: { state: 'playing', points: 500, focus: wall }, level: { interactables: [wall] } } });
     wt.hints.update(0.3);
-    expect(wt.hints.current().plain).toBe('Tap BUY');
+    expect(wt.hints.current().plain).toBe('구매 탭');
   });
 
   it('move ends once the player has moved 3 m and turned 60 degrees', () => {
@@ -364,7 +364,7 @@ describe('hints: the table', () => {
     expect(a.hints.current()).toBeNull();
     a.G.game.points = 800;
     run(a.hints, 0.5);
-    expect(a.hints.current().plain).toBe('You can afford the Diner door: 750');
+    expect(a.hints.current().plain).toBe('Diner을(를) 살 수 있습니다: 750');
     expect(a.hints.target()).toEqual([12, -20]);
   });
 
@@ -387,7 +387,7 @@ describe('hints: the table', () => {
     expect(a.hints.current()).toBeNull();
     a.events.emit('zombie:spawn', { id: 2, type: 'runner' });
     a.hints.update(0.016);
-    expect(a.hints.current().plain).toBe('Runners: keep moving');
+    expect(a.hints.current().plain).toBe('달리는 좀비: 계속 움직이세요');
   });
 
   it('parseCopy draws [..] as key caps', () => {
@@ -418,53 +418,53 @@ describe('objective line', () => {
   });
 
   it('says survive, with the count left', () => {
-    expect(objective(base())).toEqual({ text: 'Survive round 3 — 12 left', target: null });
+    expect(objective(base())).toEqual({ text: '라운드 3 생존 — 12마리 남음', target: null });
   });
   it('boss alive wins over everything', () => {
     const G = base({ zombies: { list: [{ id: 9, type: 'brute', alive: true, pos: { x: 5, y: 0, z: 6 } }] } });
     G.game.director.boss = true;
     G.game.points = 5000;
     const o = objective(G);
-    expect(o.text).toBe('Bring down the brute');
+    expect(o.text).toBe('거구를 쓰러뜨리세요');
     expect(o.target).toEqual([5, 6]);
   });
   it('lull: round cleared, restock, with the seconds', () => {
     const G = base();
     G.game.director = { phase: 'lull', total: 14, spawned: 14, alive: 0, timer: 7.2 };
-    expect(objective(G).text).toBe('Round 3 cleared: restock (8s)');
+    expect(objective(G).text).toBe('3라운드 클리어: 재정비 (8초)');
   });
   it('no ammo anywhere sends you to the sign', () => {
     const G = base({ weapon: { slots: [{ id: 'pistol', mag: 0, reserve: 0 }, null], slot: 0 } });
     const o = objective(G);
-    expect(o.text).toBe('Out of ammo: buy at the wall');
+    expect(o.text).toBe('탄약 없음: 벽에서 구매하세요');
     expect(o.target).toEqual([3, 3]);
   });
   it('one gun empty is not "no ammo"', () => {
     const G = base({ weapon: { slots: [{ id: 'pistol', mag: 0, reserve: 0 }, { id: 'pump', mag: 2, reserve: 0 }], slot: 0 } });
-    expect(objective(G).text).toMatch(/^Survive/);
+    expect(objective(G).text).toMatch(/생존/);
   });
   it('an affordable door with none open', () => {
     const G = base();
     G.game.points = 750;
     const o = objective(G);
-    expect(o.text).toBe('Open the Diner door — 750');
+    expect(o.text).toBe('Diner 여세요 — 750');
     expect(o.target).toEqual([12, -20]);
   });
   it('a door open and the power off: find the switch', () => {
     const G = base({ level: { doors: [door({ open: true })], power: { on: false, pos: [64, 1.4, 4.3] }, interactables: [] } });
     const o = objective(G);
-    expect(o.text).toBe('Find the power switch in the garage');
+    expect(o.text).toBe('차고에서 전원 스위치를 찾으세요');
     expect(o.target).toEqual([64, 4.3]);
   });
   it('power on and another door affordable: open it; otherwise survive', () => {
     const doors = [door({ open: true }), door({ id: 'd2', a: 'diner', b: 'motel', cost: 1250, label: 'Back door', pos: [26, 1, -27] })];
     const G = base({ level: { doors, power: { on: true, pos: [64, 1.4, 4.3] }, interactables: [] } });
-    expect(objective(G).text).toMatch(/^Survive/);
+    expect(objective(G).text).toMatch(/생존/);
     G.game.points = 1300;
-    expect(objective(G).text).toBe('Open the Back door — 1250');
+    expect(objective(G).text).toBe('Back door 여세요 — 1250');
   });
   it('is safe on a bare G', () => {
-    expect(objective({})).toEqual({ text: 'Survive', target: null });
+    expect(objective({})).toEqual({ text: '생존하세요', target: null });
     expect(() => objective(null)).not.toThrow();
   });
 });
@@ -472,7 +472,7 @@ describe('objective line', () => {
 describe('hint copy, icons and ordering', () => {
   it('icons in copy: [@name] draws the button icon and reads as the button in plain text', () => {
     expect(parseCopy('Tap [@reload] to reload')).toEqual([{ t: 'Tap ', key: false }, { t: 'reload', key: true, icon: 'reload' }, { t: ' to reload', key: false }]);
-    expect(plainCopy('Tap [@reload] to reload')).toBe('Tap the reload button to reload');
+    expect(plainCopy('Tap [@reload] to reload')).toBe('Tap reload 버튼 to reload');
   });
   it('touch copy never names a word that is not on a button (icons instead)', () => {
     const touchCopy = (id, over = {}) => {
@@ -481,10 +481,10 @@ describe('hint copy, icons and ordering', () => {
       return a.hints.current();
     };
     const shoot = touchCopy('shoot');
-    expect(shoot.plain).toBe('Crosshair on them, tap the fire button to shoot. Hold it with automatic guns');
+    expect(shoot.plain).toBe('조준선을 맞추고 fire 버튼 탭으로 발사. 자동 무기는 길게 누르세요');
     expect(shoot.parts.find((p) => p.icon).icon).toBe('fire');
     expect(touchCopy('reload').parts.find((p) => p.icon).icon).toBe('reload');
-    expect(touchCopy('throw').plain).toBe('Tap the throw button to throw');
+    expect(touchCopy('throw').plain).toBe('throw 버튼 탭으로 투척');
     expect(touchCopy('switchGuns').parts.find((p) => p.icon).icon).toBe('swap');
     for (const h of HINTS) {
       const t = typeof h.text.touch === 'function' ? h.text.touch({ weapon: { melee: 'knife' } }) : h.text.touch || '';
@@ -504,26 +504,26 @@ describe('hint copy, icons and ordering', () => {
     const a = rig({ over: { weapon: w } });
     run(a.hints, 0.5);
     expect(a.hints.current().id).toBe('switchGuns');
-    expect(a.hints.current().plain).toBe('Q or 1 / 2 switches guns');
+    expect(a.hints.current().plain).toBe('Q 또는 1 / 2로 무기 교체');
     const b = rig();
     b.events.emit('round:start', { n: 3 });
     run(b.hints, 0.5);
-    expect(b.hints.current().plain).toBe("Hold Shift to sprint — you can't shoot while sprinting");
+    expect(b.hints.current().plain).toBe('Shift를 누르면 달리기 — 달리는 동안은 쏠 수 없습니다');
     const t = rig({ touch: true });
     t.events.emit('round:start', { n: 3 });
     run(t.hints, 0.5);
-    expect(t.hints.current().plain).toBe('Push the stick all the way to sprint');
+    expect(t.hints.current().plain).toBe('스틱을 끝까지 밀면 달립니다');
     const m = rig({ over: { zombies: { list: [{ id: 1, alive: true, pos: { x: 0, y: 0, z: 1.5 } }] } } });
     run(m.hints, 0.5);
     expect(m.hints.current().id).toBe('melee');
     const p = rig();
     p.events.emit('powerup:drop', { id: 1, kind: 'oneTap', pos: { x: 1, y: 0, z: 1 } });
     run(p.hints, 0.3);
-    expect(p.hints.current().plain).toBe('Walk over the glow to grab it');
+    expect(p.hints.current().plain).toBe('빛나는 곳을 밟아 가져가세요');
     const bench = { id: 'bench', kind: 'bench', pos: [3, 0, 3], cost: 4000, enabled: () => true };
     const bd = rig({ over: { game: { state: 'playing', points: 4000 }, level: { power: { on: true }, interactables: [bench] } } });
     run(bd.hints, 0.5);
-    expect(bd.hints.current().plain).toBe('Upgrade bench: 4000');
+    expect(bd.hints.current().plain).toBe('업그레이드 작업대: 4000');
     const off = rig({ over: { game: { state: 'playing', points: 4000 }, level: { power: { on: false }, interactables: [bench] } } });
     run(off.hints, 0.5);
     expect(off.hints.current()).toBeNull();
@@ -551,27 +551,27 @@ describe('hint copy, icons and ordering', () => {
     const a = rig();
     a.events.emit('armor:change', { plates: 1 });
     a.hints.update(0.016);
-    expect(a.hints.current().plain).toBe('Armour plates soak damage before your health');
+    expect(a.hints.current().plain).toBe('방호판이 체력보다 먼저 피해를 흡수합니다');
   });
   it('settings rows are built through menus.addSettingsRow with working get/set', () => {
     const a = rig();
     const [on, again] = settingsRowSpecs(a.hints);
-    expect(on.label).toBe('Hints');
+    expect(on.label).toBe('힌트');
     expect(on.get()).toBe(true);
     on.set(false);
     expect(a.hints.enabled).toBe(false);
     expect(on.get()).toBe(false);
     a.hints.enabled = true;
     a.hints.dismiss('plates');
-    expect(again.note()).toMatch(/1 seen/);
+    expect(again.note()).toMatch(/1개 표시됨/);
     again.set('reset');
     expect(a.hints.seen('plates')).toBe(false);
-    expect(again.note()).toBe('None seen yet');
+    expect(again.note()).toBe('아직 표시된 힌트 없음');
   });
   it('refusal copy for power, owned and busy', () => {
-    expect(denyText('power')).toBe('Needs power');
-    expect(denyText('owned')).toBe('Already have it');
-    expect(denyText('busy')).toBe('Wait a moment');
+    expect(denyText('power')).toBe('전원이 필요합니다');
+    expect(denyText('owned')).toBe('이미 가지고 있습니다');
+    expect(denyText('busy')).toBe('잠시만 기다리세요');
   });
   it('the end-screen slot is emptied when a new game starts', () => {
     const mk = () => { const el = { className: '', dataset: {}, children: [], hidden: false, classList: { add() {} }, setAttribute() {}, addEventListener() {}, append(...k) { this.children.push(...k); }, appendChild(k) { this.children.push(k); return k; }, remove() {} }; Object.defineProperty(el, 'textContent', { get() { return ''; }, set() { this.children.length = 0; } }); return el; };
@@ -598,12 +598,12 @@ describe('objective: stragglers and the wall', () => {
       game: { round: 4, points: 0, director: dir() }, player: { pos: [0, 0, 0], yaw: 0 }, weapon: { slots: [{ id: 'pistol', mag: 3, reserve: 3 }, null], slot: 0 },
       zombies: { list: [{ id: 1, alive: true, pos: { x: 30, y: 0, z: 0 } }, { id: 2, alive: true, pos: { x: 8, y: 0, z: 6 } }] },
     };
-    expect(objective(G)).toEqual({ text: 'Find the last 2', target: [8, 6] });
+    expect(objective(G)).toEqual({ text: '남은 2마리를 찾으세요', target: [8, 6] });
     G.zombies.list.pop();
     G.game.director.alive = 1;
-    expect(objective(G).text).toBe('Find the last one');
+    expect(objective(G).text).toBe('마지막 한 마리를 찾으세요');
     G.game.director.spawned = 5; // still spawning: not a straggler hunt
-    expect(objective(G).text).toMatch(/^Survive/);
+    expect(objective(G).text).toMatch(/생존/);
   });
   it('the wall target is the nearest affordable wall that sells for a gun you hold', () => {
     const its = [
@@ -616,7 +616,7 @@ describe('objective: stragglers and the wall', () => {
       weapon: { slots: [{ id: 'pistol', mag: 0, reserve: 0 }, { id: 'pump', mag: 0, reserve: 0 }], slot: 0 }, level: { interactables: its },
     };
     const o = objective(G);
-    expect(o.text).toBe('Out of ammo: buy at the wall');
+    expect(o.text).toBe('탄약 없음: 벽에서 구매하세요');
     expect(o.target).toEqual([10, 0]); // the pump wall (held, affordable, nearer than the store)
   });
   it('doors read "the Diner door" everywhere', () => {
@@ -624,7 +624,7 @@ describe('objective: stragglers and the wall', () => {
       game: { round: 1, points: 800, director: dir({ spawned: 2 }) }, player: { pos: [0, 0, 0], yaw: 0 },
       level: { doors: [{ id: 'd1', a: 'forecourt', b: 'diner', cost: 750, label: 'Diner', pos: [12, 1, -20], open: false }], power: { on: false } },
     };
-    expect(objective(G).text).toBe('Open the Diner door — 750');
+    expect(objective(G).text).toBe('Diner 여세요 — 750');
   });
 });
 

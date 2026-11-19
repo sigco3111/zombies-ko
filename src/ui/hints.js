@@ -238,8 +238,8 @@ export function createHints(G, opts = {}) {
 export function settingsRowSpecs(hints) {
   const seenCount = () => { let n = 0; for (const d of hints.defs) if (hints.seen(d.id)) n++; return n; };
   return [
-    { id: 'hints', label: 'Hints', options: [{ v: true, label: 'On' }, { v: false, label: 'Off' }], get: () => hints.enabled, set: (v) => { hints.enabled = v === true || v === 'true'; } },
-    { id: 'hintsAgain', label: 'Show hints again', options: [{ v: 'reset', label: 'Reset' }], get: () => '', set: () => { hints.reset(); }, note: () => { const n = seenCount(); return n ? `${n} seen` : 'None seen yet'; } },
+    { id: 'hints', label: '힌트', options: [{ v: true, label: '켬' }, { v: false, label: '끔' }], get: () => hints.enabled, set: (v) => { hints.enabled = v === true || v === 'true'; } },
+    { id: 'hintsAgain', label: '힌트 다시 보기', options: [{ v: 'reset', label: '초기화' }], get: () => '', set: () => { hints.reset(); }, note: () => { const n = seenCount(); return n ? `${n}개 표시됨` : '아직 표시된 힌트 없음'; } },
   ];
 }
 function mountSettingsRows(G, hints) {

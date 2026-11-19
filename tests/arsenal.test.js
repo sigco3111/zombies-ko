@@ -38,7 +38,7 @@ const run = (w, secs) => { for (let i = 0, n = Math.round(secs / DT); i < n; i++
 describe('weapon table', () => {
   it('has the ten weapons with the planned numbers', () => {
     expect(WEAPON_IDS).toEqual(['pistol', 'revolver', 'pump', 'autoShotgun', 'smg', 'rifle', 'battleRifle', 'lmg', 'jumper', 'flare']);
-    expect(WEAPONS.pistol).toMatchObject({ name: 'Wren 9', mag: 12, reserve: 48, maxReserve: 96, damage: 40, rpm: 400, auto: false, reload: 1.6, range: 60 });
+    expect(WEAPONS.pistol).toMatchObject({ name: '렌 9', mag: 12, reserve: 48, maxReserve: 96, damage: 40, rpm: 400, auto: false, reload: 1.6, range: 60 });
     expect(WEAPONS.smg).toMatchObject({ mag: 30, rpm: 780, auto: true, wall: { cost: 1250, ammo: 500 } });
     expect(WEAPONS.pump).toMatchObject({ pellets: 8, damage: 28, reloadKind: 'shell', reload: 0.55, falloff: [8, 22, 0.35] });
     expect(WEAPONS.lmg.moveScale).toBe(0.9);
@@ -61,7 +61,7 @@ describe('weapon table', () => {
     const s = createSlot('pistol');
     expect(statsFor(s).damage).toBe(40);
     s.upgraded = true;
-    expect(statsFor(s)).toMatchObject({ damage: 80, mag: 18, reserve: 72, maxReserve: 144, upgraded: true, name: 'Wren 9 "Night Owl"' });
+    expect(statsFor(s)).toMatchObject({ damage: 80, mag: 18, reserve: 72, maxReserve: 144, upgraded: true, name: '렌 9 "밤올빼미"' });
     s.attachments.add('mag');
     expect(statsFor(s).mag).toBe(27);
     expect(statsFor(createSlot('smg')).upgraded).toBe(false);
@@ -91,7 +91,7 @@ describe('arsenal', () => {
     expect(w.slots.map((s) => s && s.id)).toEqual(['pistol', null]);
     expect(w.slot).toBe(0);
     expect(w.id).toBe('pistol');
-    expect(w.name).toBe('Wren 9');
+    expect(w.name).toBe('렌 9');
     expect(w.def.damage).toBe(40);
     expect(w.ammo).toMatchObject({ mag: 12, reserve: 48 });
     expect(w.melee).toBe('knife');
@@ -205,7 +205,7 @@ describe('arsenal', () => {
     expect(w.upgrade()).toBe(true);
     expect(statsFor(w.slots[0]).damage).toBe(80);
     expect(w.def.damage).toBe(80);
-    expect(w.name).toBe('Wren 9 "Night Owl"');
+    expect(w.name).toBe('렌 9 "밤올빼미"');
     expect(w.ammo).toMatchObject({ mag: 18, reserve: 72 });
     expect(w.upgrade()).toBe(false);
     expect(w.upgrade('smg')).toBe(false); // not held

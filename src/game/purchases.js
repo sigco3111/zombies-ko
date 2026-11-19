@@ -64,11 +64,11 @@ function crateLabel(w, id) {
   const s = slotOf(w, id);
   const key = s && s.upgraded ? `${id}+` : id;
   let l = crateLabels.get(key);
-  if (!l) { l = `${s ? statsFor(s).name : WEAPONS[id].name} ammo`; crateLabels.set(key, l); }
+  if (!l) { l = `${s ? statsFor(s).name : WEAPONS[id].name} 탄약`; crateLabels.set(key, l); }
   return l;
 }
 export function crateLabelOf(it, w) {
-  if (!w || !w.slots) return (it && it.label) || 'Ammo';
+  if (!w || !w.slots) return (it && it.label) || '탄약';
   return crateLabel(w, crateWeaponOf(it, w));
 }
 export function crateCostOf(it, w) {

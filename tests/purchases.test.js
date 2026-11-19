@@ -29,7 +29,7 @@ describe('wall weapons', () => {
     expect(g.events('buy')).toEqual([{ item: 'wallWeapon', cost: 1000, id: 'wall-hollis12' }]);
     const it = g.find('wall-hollis12');
     expect(it.cost).toBe(400);
-    expect(it.label).toMatch(/ammo/i);
+    expect(it.label).toMatch(/탄약/);
     // full reserve: refused with `full`
     g.game.economy.points = 5000;
     g.G.weapon.slots[1].reserve = 54;
@@ -51,7 +51,7 @@ describe('wall weapons', () => {
     g.game.economy.points = 1199;
     expect(g.find('wall-hollis12').cost).toBe(1200);
     expect(g.find('wall-hollis12').cost).toBe(crateAmmoPrice('pump', true));
-    expect(g.find('wall-hollis12').label).toMatch(/ammo/i);
+    expect(g.find('wall-hollis12').label).toMatch(/탄약/);
     expect(use(g, 'wall-hollis12')).toEqual({ ok: false, reason: 'points' });
     g.game.economy.points = 1200;
     expect(use(g, 'wall-hollis12').ok).toBe(true);
@@ -84,7 +84,7 @@ describe('upgraded ammo costs the same at a wall and at the crate', () => {
       expect(w.cost).toBe(crateAmmoPrice(id, true));
       expect(w.cost).toBe(g.game.focus.cost);
       expect(w.cost).toBeLessThanOrEqual(3000);
-      expect(promptString(w).endsWith(`ammo · ${formatPoints(w.cost)}`)).toBe(true);
+      expect(promptString(w).endsWith(`탄약 · ${formatPoints(w.cost)}`)).toBe(true);
     });
   }
 });

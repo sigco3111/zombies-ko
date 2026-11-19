@@ -72,14 +72,14 @@ describe('info panel content follows the game tables', () => {
   });
   it('prices the ammo crate from crateAmmoPrice, for any gun', () => {
     const text = crateText();
-    expect(text).toMatch(/gun in your hand/);
+    expect(text).toMatch(/손에 든 총/);
     expect(text).not.toMatch(/pistol/i);
     const allowed = new Set([T.economy.crateUpgraded.max]);
     for (const id of T.weapons.ids) allowed.add(crateAmmoPrice(id, false));
     const nums = (text.match(/\d[\d\u00a0 ]*\d|\d/g) || []).map((n) => Number(n.replace(/[\u00a0 ]/g, '')));
     expect(nums.length).toBeGreaterThan(1);
     for (const n of nums) expect(allowed.has(n), `${n} is in the tables`).toBe(true);
-    expect(text).toContain('three times');
+    expect(text).toContain('세 배');
     expect(text).toContain(formatPoints(T.economy.crateUpgraded.max));
   });
   it('shows every gun its stock and upgraded ammo price', () => {
@@ -93,7 +93,7 @@ describe('info panel content follows the game tables', () => {
     const s = howItems().find((i) => i.id === 'search').text;
     expect(s).toContain(c.key);
     expect(s).toContain(c.touch);
-    expect(s).toMatch(/locker/);
+    expect(s).toMatch(/사물함/);
   });
   it('explains bullets passing through and zombies hitting you as you run past', () => {
     const ids = howItems().map((i) => i.id);
@@ -155,7 +155,7 @@ describe('info panel DOM', () => {
       expect(s, `panel for ${t.textContent}`).toBeTruthy();
       expect(s.attrs['aria-labelledby']).toBe(t.id);
     }
-    expect(root.all((n) => n.attrs['aria-label'] === 'Game information')).toHaveLength(1);
+    expect(root.all((n) => n.attrs['aria-label'] === '게임 정보')).toHaveLength(1);
   });
   it('shows Controls first, one tab in the tab order', () => {
     expect(tabs().map((t) => t.attrs['aria-selected'])).toEqual(['true', 'false', 'false', 'false']);

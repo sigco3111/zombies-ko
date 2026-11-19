@@ -666,11 +666,11 @@ describe('client: api and status cache', () => {
 
 describe('client: copy', () => {
   it('matches the expected layout', () => {
-    expect(SENT_TEXT).toBe('Thanks — report sent.');
-    expect(reportErrorText({ error: 'rate_limited' })).toBe('You’ve sent a few already. Try again later.');
-    expect(reportErrorText({ error: 'rate_limited', scope: 'global' })).toBe('You’ve sent a few already. Try again later.');
-    for (const e of ['offline', 'server', 'disabled', 'whatever']) expect(reportErrorText({ error: e })).toBe('Couldn’t send it. Check your connection and try again.');
-    expect(fieldErrorText('message_short')).toBe('Write at least 10 characters.');
+    expect(SENT_TEXT).toBe('감사합니다 — 신고가 접수되었습니다.');
+    expect(reportErrorText({ error: 'rate_limited' })).toBe('이미 여러 건을 보냈습니다. 나중에 다시 시도하세요.');
+    expect(reportErrorText({ error: 'rate_limited', scope: 'global' })).toBe('이미 여러 건을 보냈습니다. 나중에 다시 시도하세요.');
+    for (const e of ['offline', 'server', 'disabled', 'whatever']) expect(reportErrorText({ error: e })).toBe('보내지 못했습니다. 연결을 확인하고 다시 시도하세요.');
+    expect(fieldErrorText('message_short')).toBe('최소 10자 이상 써주세요.');
   });
   it('a 2000-character CJK message with full context is over the 6 KB body cap and is caught before sending', () => {
     const big = { kind: 'bug', message: '\u6F22'.repeat(2000), contact: '', context: { ua: 'u'.repeat(200), viewport: '1920x1080' } };

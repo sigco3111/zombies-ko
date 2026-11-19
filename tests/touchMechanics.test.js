@@ -363,10 +363,10 @@ describe('copy and the FIRE glyph', () => {
   it('the controls card says tap to shoot, hold with automatics, tap the left side to jump, drag to look', async () => {
     const { CONTROLS } = await import('../src/ui/format.js');
     const row = (id) => CONTROLS.find((c) => c.id === id).touch;
-    expect(row('fire')).toMatch(/^Tap; hold for automatics/);
-    expect(row('jump')).toMatch(/Tap left side/);
-    expect(row('look')).toBe('Drag right side');
-    expect(CONTROLS.find((c) => c.id === 'fire').key).toBe('Left click'); // keyboard column unchanged
+    expect(row('fire')).toMatch(/^탭; 자동 무기는 길게/);
+    expect(row('jump')).toMatch(/왼쪽 화면 탭/);
+    expect(row('look')).toBe('오른쪽 화면 드래그');
+    expect(CONTROLS.find((c) => c.id === 'fire').key).toBe('좌클릭'); // keyboard column unchanged
   });
 });
 

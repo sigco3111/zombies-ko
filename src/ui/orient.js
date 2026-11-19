@@ -8,7 +8,7 @@
 // centre, under the safe-area inset: away from the crosshair, the stick zone and the buttons.
 // mode() is pure, for tests.
 export const TOAST_MS = 5000;
-export const TURN_TEXT = 'Turn your phone sideways for a bigger view';
+export const TURN_TEXT = '휴대폰을 가로로 돌리면 더 크게 보입니다';
 const KEY = 'graveyard-shift.turnHint';
 
 // What to show: 'off' | 'line' (glyph and words) | 'glyph' (glyph alone).
@@ -26,7 +26,7 @@ export function createOrient(G, host, { enabled = true } = {}) {
   const el = document.createElement('button');
   el.type = 'button';
   el.className = 'gs-turn';
-  el.setAttribute('aria-label', `${TURN_TEXT}. Tap to hide`);
+  el.setAttribute('aria-label', `${TURN_TEXT}. 탭하면 숨깁니다`);
   el.hidden = true;
   const NS = 'http://www.w3.org/2000/svg';
   const art = document.createElementNS(NS, 'svg');

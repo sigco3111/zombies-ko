@@ -9,11 +9,11 @@ export const RING_R = 22;
 const TOAST_LIFE = 2.5;
 const MAX_TOASTS = 3;
 export const BANNER_LIFE = 2;
-const THROW_NAMES = { frag: 'Frag', molotov: 'Molotov', decoy: 'Decoy' };
+const THROW_NAMES = { frag: '수류탄', molotov: '화염병', decoy: '미끼' };
 const THROW_ORDER = ['frag', 'molotov', 'decoy'];
-const ATTACH_NAMES = { sight: 'Sight', mag: 'Extended mag', grip: 'Grip', suppressor: 'Suppressor' };
-const PU_NAMES = (tuning.economy && tuning.economy.powerups && tuning.economy.powerups.names) || { resupply: 'Resupply', oneTap: 'One-Tap', doubleTime: 'Double Time', flashover: 'Flashover' };
-const nameOf = (id) => (id === 'axe' ? 'Fire axe' : id === 'knife' ? 'Knife' : (WEAPONS[id] && WEAPONS[id].name) || String(id));
+const ATTACH_NAMES = { sight: '조준경', mag: '확장 탄창', grip: '손잡이', suppressor: '소음기' };
+const PU_NAMES = (tuning.economy && tuning.economy.powerups && tuning.economy.powerups.names) || { resupply: '재보급', oneTap: '한 방에', doubleTime: '두 배 시간', flashover: '플래시오버' };
+const nameOf = (id) => (id === 'axe' ? '소방 도끼' : id === 'knife' ? '나이프' : (WEAPONS[id] && WEAPONS[id].name) || String(id));
 const finite = (v, d = 0) => (Number.isFinite(v) ? v : d);
 
 // ---- view-models --------------------------------------------------------------------------------
@@ -57,18 +57,18 @@ export function ringView(progress) {
 export function toastFor(reward, mode) {
   if (!reward || typeof reward !== 'object') return null;
   const item = reward.item;
-  if (mode === 'take') return { icon: 'weapon', text: `${nameOf(item)} taken` };
+  if (mode === 'take') return { icon: 'weapon', text: `${nameOf(item)} 획득` };
   switch (reward.kind) {
-    case 'nothing': return { icon: 'nothing', text: 'Nothing here' };
-    case 'ammo': return { icon: 'ammo', text: `+${Math.round(finite(reward.amount))} rounds` };
-    case 'points': return { icon: 'points', text: `+${Math.round(finite(reward.amount))}` };
-    case 'medkit': return { icon: 'medkit', text: 'Medkit' };
-    case 'plate': return { icon: 'plate', text: 'Armour plate' };
-    case 'throwable': return { icon: 'throw', text: THROW_NAMES[item] || 'Throwable' };
-    case 'attachment': return { icon: 'attach', text: ATTACH_NAMES[item] || 'Attachment' };
-    case 'powerup': return { icon: 'powerup', text: `${PU_NAMES[item] || 'Power-up'}${reward.amount > 0 ? ` · ${Math.round(reward.amount)}s` : ''}` };
+    case 'nothing': return { icon: 'nothing', text: '아무것도 없습니다' };
+    case 'ammo': return { icon: 'ammo', text: `탄약 +${Math.round(finite(reward.amount))}발` };
+    case 'points': return { icon: 'points', text: `+${Math.round(finite(reward.amount))}점` };
+    case 'medkit': return { icon: 'medkit', text: '구급상자' };
+    case 'plate': return { icon: 'plate', text: '방호판' };
+    case 'throwable': return { icon: 'throw', text: THROW_NAMES[item] || '투척 무기' };
+    case 'attachment': return { icon: 'attach', text: ATTACH_NAMES[item] || '부착물' };
+    case 'powerup': return { icon: 'powerup', text: `${PU_NAMES[item] || '파워업'}${reward.amount > 0 ? ` · ${Math.round(reward.amount)}초` : ''}` };
     case 'weapon': return { icon: 'weapon', text: nameOf(item) };
-    default: return { icon: 'nothing', text: 'Found something' };
+    default: return { icon: 'nothing', text: '무언가 발견했습니다' };
   }
 }
 // The stack: newest last, at most `max`; returns a new list. Items keep their identity so the DOM can follow.
@@ -78,8 +78,8 @@ export function pushToast(list, toast, now = 0, max = MAX_TOASTS) {
 }
 export function bannerFor(kind, e) {
   const n = String((e && e.n) || 1);
-  if (kind === 'end') return { big: n, small: 'Round cleared' };
-  return { big: n, small: e && e.boss ? 'Boss round' : 'Round' };
+  if (kind === 'end') return { big: n, small: '라운드 클리어' };
+  return { big: n, small: e && e.boss ? '보스 라운드' : '라운드' };
 }
 
 // ---- DOM --------------------------------------------------------------------------------------
@@ -268,7 +268,7 @@ export function createPanels(G, { addPanel, overlay, staged = false, query = new
   if (sample) {
     pushIt({ icon: 'ammo', text: '+36 rounds' }); pushIt({ icon: 'medkit', text: 'Medkit' });
     const b = Number(query.get('banner'));
-    if (b > 0) { bBig.textContent = String(b); bSmall.textContent = query.get('boss') ? 'Boss round' : 'Round'; bannerEl.classList.add('on', 'still'); }
+    if (b > 0) { bBig.textContent = String(b); bSmall.textContent = query.get('boss') ? '보스 라운드' : '라운드'; bannerEl.classList.add('on', 'still'); }
   }
 
   let acc = 1;

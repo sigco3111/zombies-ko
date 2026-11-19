@@ -7,7 +7,7 @@ describe('weapon slots', () => {
   it('two slots, the held one marked, an empty one empty', () => {
     const v = slotsView({ slots: [{ id: 'pistol', mag: 8, reserve: 40, upgraded: false, attachments: new Set() }, null], slot: 0 });
     expect(v).toHaveLength(2);
-    expect(v[0]).toMatchObject({ id: 'pistol', name: 'Wren 9', held: true, upgraded: false });
+    expect(v[0]).toMatchObject({ id: 'pistol', name: '렌 9', held: true, upgraded: false });
     expect(v[1]).toBeNull();
   });
   it('slot view for [{id:pistol}, null] works with the bare minimum', () => {
@@ -33,8 +33,8 @@ describe('plates, throwables, timers', () => {
   });
   it('throwables: the selected kind and what is carried', () => {
     expect(throwablesView({ throwables: { frag: 2, molotov: 0, decoy: 1 }, throwable: 'decoy' })).toEqual([
-      { kind: 'frag', name: 'Frag', count: 2, selected: false },
-      { kind: 'decoy', name: 'Decoy', count: 1, selected: true },
+      { kind: 'frag', name: '수류탄', count: 2, selected: false },
+      { kind: 'decoy', name: '미끼', count: 1, selected: true },
     ]);
     expect(throwablesView({ throwables: { frag: 0, molotov: 0, decoy: 0 } })).toEqual([]);
     expect(throwablesView(undefined)).toEqual([]);
@@ -78,18 +78,18 @@ describe('search ring', () => {
 
 describe('toasts', () => {
   it('names every reward kind', () => {
-    expect(toastFor({ kind: 'nothing' }).text).toBe('Nothing here');
-    expect(toastFor({ kind: 'ammo', item: 'pistol', amount: 36 }).text).toBe('+36 rounds');
-    expect(toastFor({ kind: 'points', amount: 150 }).text).toBe('+150');
-    expect(toastFor({ kind: 'medkit', amount: 60 }).text).toBe('Medkit');
-    expect(toastFor({ kind: 'plate' }).text).toBe('Armour plate');
-    expect(toastFor({ kind: 'throwable', item: 'molotov' }).text).toBe('Molotov');
-    expect(toastFor({ kind: 'attachment', item: 'sight' }).text).toBe('Sight');
-    expect(toastFor({ kind: 'powerup', item: 'oneTap', amount: 15 }).text).toBe('One-Tap · 15s');
-    expect(toastFor({ kind: 'weapon', item: 'axe' }).text).toBe('Fire axe');
-    expect(toastFor({ kind: 'weapon', item: 'revolver' }).text).toMatch(/Marlow/);
+    expect(toastFor({ kind: 'nothing' }).text).toBe('아무것도 없습니다');
+    expect(toastFor({ kind: 'ammo', item: 'pistol', amount: 36 }).text).toBe('탄약 +36발');
+    expect(toastFor({ kind: 'points', amount: 150 }).text).toBe('+150점');
+    expect(toastFor({ kind: 'medkit', amount: 60 }).text).toBe('구급상자');
+    expect(toastFor({ kind: 'plate' }).text).toBe('방호판');
+    expect(toastFor({ kind: 'throwable', item: 'molotov' }).text).toBe('화염병');
+    expect(toastFor({ kind: 'attachment', item: 'sight' }).text).toBe('조준경');
+    expect(toastFor({ kind: 'powerup', item: 'oneTap', amount: 15 }).text).toBe('한 방에 · 15초');
+    expect(toastFor({ kind: 'weapon', item: 'axe' }).text).toBe('소방 도끼');
+    expect(toastFor({ kind: 'weapon', item: 'revolver' }).text).toMatch(/말로/);
     expect(toastFor(null)).toBeNull();
-    expect(toastFor({ kind: 'mystery' }).text).toBe('Found something');
+    expect(toastFor({ kind: 'mystery' }).text).toBe('무언가 발견했습니다');
   });
   it('at most three stacked: a fourth drops the oldest', () => {
     let list = [];
@@ -97,15 +97,15 @@ describe('toasts', () => {
     expect(list.map((t) => t.text)).toEqual(['b', 'c', 'd']);
   });
   it('a pickup of a weapon says it is taken', () => {
-    expect(toastFor({ kind: 'weapon', item: 'axe' }, 'take').text).toBe('Fire axe taken');
+    expect(toastFor({ kind: 'weapon', item: 'axe' }, 'take').text).toBe('소방 도끼 획득');
   });
 });
 
 describe('banner and compass', () => {
   it('round banner copy', () => {
-    expect(bannerFor('start', { n: 3, boss: false })).toEqual({ big: '3', small: 'Round' });
-    expect(bannerFor('start', { n: 5, boss: true })).toEqual({ big: '5', small: 'Boss round' });
-    expect(bannerFor('end', { n: 3 })).toEqual({ big: '3', small: 'Round cleared' });
+    expect(bannerFor('start', { n: 3, boss: false })).toEqual({ big: '3', small: '라운드' });
+    expect(bannerFor('start', { n: 5, boss: true })).toEqual({ big: '5', small: '보스 라운드' });
+    expect(bannerFor('end', { n: 3 })).toEqual({ big: '3', small: '라운드 클리어' });
   });
   it('compass: ahead is the middle, behind pins to an edge, near hides', () => {
     const p = { pos: [0, 0, 0], yaw: 0 };

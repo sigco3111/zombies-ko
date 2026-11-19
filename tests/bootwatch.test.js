@@ -58,9 +58,9 @@ describe('boot watch: the details text', () => {
   });
 
   it('labels the progress line', () => {
-    expect(warmLabel({ ready: 23, total: 67 })).toBe('Preparing graphics 23 / 67');
-    expect(warmLabel({ ready: 0, total: 0 })).toBe('Preparing graphics');
-    expect(warmLabel({ ready: 9, total: 4 })).toBe('Preparing graphics 4 / 4');
+    expect(warmLabel({ ready: 23, total: 67 })).toBe('그래픽 준비 중 23 / 67');
+    expect(warmLabel({ ready: 0, total: 0 })).toBe('그래픽 준비 중');
+    expect(warmLabel({ ready: 9, total: 4 })).toBe('그래픽 준비 중 4 / 4');
   });
 
   it('reads the device, and leaves what it cannot read unknown', () => {
@@ -100,7 +100,7 @@ describe('boot watch: on the page', () => {
     watch.stage('shaders');
     watch.progress({ ready: 3, total: 67, mode: 'parallel' });
     const status = doc.getElementById('boot-status');
-    expect(status.textContent).toBe('Preparing graphics 3 / 67');
+    expect(status.textContent).toBe('그래픽 준비 중 3 / 67');
     const note = doc.getElementById('boot-note');
     expect(note.textContent).toBe(NOTE_TEXT);
     expect(note.hidden).toBe(true);
@@ -109,7 +109,7 @@ describe('boot watch: on the page', () => {
     win.advance(200);
     expect(note.hidden).toBe(false);
     watch.progress({ ready: 67, total: 67, mode: 'parallel' });
-    expect(status.textContent).toBe('Preparing graphics 67 / 67');
+    expect(status.textContent).toBe('그래픽 준비 중 67 / 67');
     watch.ready();
     expect(note.hidden).toBe(true);
   });
@@ -131,20 +131,20 @@ describe('boot watch: on the page', () => {
     win.advance(20);
     const box = doc.getElementById('boot-watch');
     expect(box).not.toBe(null);
-    expect(textOf(box)).toContain('Still loading');
-    expect(textOf(box)).toContain('Preparing graphics 40 / 67. 45 s so far');
+    expect(textOf(box)).toContain('아직 불러오는 중');
+    expect(textOf(box)).toContain('그래픽 준비 중 40 / 67. 45초 경과');
     win.advance(3000);
-    expect(textOf(box)).toContain('48 s so far');
+    expect(textOf(box)).toContain('48초 경과');
     // Copy details puts the text on the clipboard and shows it
     let copied = null;
     win.navigator.clipboard = { writeText: (t) => { copied = t; return Promise.resolve(); } };
-    const copy = box.querySelector('.gs-bw-actions').children.find((b) => b.textContent === 'Copy details');
+    const copy = box.querySelector('.gs-bw-actions').children.find((b) => b.textContent === '상세 정보 복사');
     copy.click();
     await Promise.resolve();
-    expect(copied).toContain('Graveyard Shift: loading details');
+    expect(copied).toContain('그레이브야드 시프트: 로딩 상세 정보');
     expect(copied).toContain('Stage: shaders (still running)');
     expect(copied).toContain('Shaders ready: 40 / 67 programs (parallel)');
-    expect(copy.textContent).toBe('Copied');
+    expect(copy.textContent).toBe('복사됨');
     watch.ready();
     expect(doc.getElementById('boot-watch')).toBe(null);
   });
@@ -158,7 +158,7 @@ describe('boot watch: on the page', () => {
     const box = doc.getElementById('boot-watch');
     expect(textOf(box)).toContain('zombies: no bodies');
     expect(watch.details()).toContain('Stages that failed: zombies');
-    box.querySelector('.gs-bw-actions').children.find((b) => b.textContent === 'Dismiss').click();
+    box.querySelector('.gs-bw-actions').children.find((b) => b.textContent === '닫기').click();
     expect(doc.getElementById('boot-watch')).toBe(null);
   });
 
@@ -169,8 +169,8 @@ describe('boot watch: on the page', () => {
     canvas.dispatch('webglcontextlost');
     win.advance(LOST_WAIT_MS + 10);
     const fail = doc.getElementById('boot-failed');
-    expect(textOf(fail)).toContain('Graphics context lost');
-    fail.querySelector('.gs-bw-actions').children.find((b) => b.textContent === 'Reload').click();
+    expect(textOf(fail)).toContain('그래픽 컨텍스트 손실');
+    fail.querySelector('.gs-bw-actions').children.find((b) => b.textContent === '새로고침').click();
     expect(win.reloaded).toBe(1);
     expect(watch.details()).toContain('Context lost: yes');
 
@@ -216,7 +216,7 @@ describe('boot watch: on the page', () => {
   it('a fatal boot error: the full message', () => {
     const { doc, watch } = setup();
     watch.fatal(new Error('boom'));
-    expect(textOf(doc.getElementById('boot-failed'))).toContain('could not finish loading');
+    expect(textOf(doc.getElementById('boot-failed'))).toContain('게임 로딩을 끝내지 못했습니다');
   });
 });
 
@@ -226,8 +226,8 @@ describe('boot watch: software renderer and console', () => {
     const gl = { RENDERER: 1, isContextLost: () => false, getParameter: () => 'ANGLE (Microsoft, Microsoft Basic Render Driver Direct3D11 vs_5_0 ps_5_0, D3D11)', getExtension: () => null };
     watch.attach({ getContext: () => gl, domElement: null });
     const soft = doc.getElementById('boot-soft');
-    expect(textOf(soft)).toContain('Your browser is drawing without your graphics card');
-    expect(textOf(soft)).toContain('Chrome or Edge');
+    expect(textOf(soft)).toContain('브라우저가 그래픽 카드를 쓰지 않고');
+    expect(textOf(soft)).toContain('Chrome 또는 Edge');
     expect(textOf(soft)).toContain('Firefox');
     expect(watch.details()).toContain('Software renderer: yes');
   });

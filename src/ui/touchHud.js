@@ -80,8 +80,8 @@ export const ICONS = {
 const SVG = 'http://www.w3.org/2000/svg';
 // The FIRE glyph and its title for a fire mode ('auto' holds; anything else is a tap a shot).
 export const fireGlyph = (mode) => (mode === 'auto' ? 'fireAuto' : 'fire');
-const FIRE_TITLES = { fire: 'Fire: tap to shoot', fireAuto: 'Fire: hold to keep shooting' };
-const LABELS = { fire: 'Fire', ads: 'Aim', reload: 'Reload', jump: 'Jump', melee: 'Melee', throw: 'Throw', pause: 'Pause', swap: 'Swap weapon', interact: 'Use' };
+const FIRE_TITLES = { fire: '발사: 탭하면 발사', fireAuto: '발사: 길게 누르면 연사' };
+const LABELS = { fire: '발사', ads: '조준', reload: '재장전', jump: '점프', melee: '근접', throw: '투척', pause: '일시정지', swap: '무기 교체', interact: '사용' };
 
 const h = (tag, cls, text) => {
   const e = document.createElement(tag);

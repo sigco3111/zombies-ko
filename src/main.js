@@ -63,10 +63,10 @@ function showRenderFailure() {
   el.style.cssText = 'position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;'
     + 'gap:14px;padding:24px;text-align:center;background:#05070a;color:#ece6d6;font:16px/1.5 Overpass,"Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;';
   const h = document.createElement('div');
-  h.textContent = 'The game could not start its graphics';
+  h.textContent = '게임이 그래픽을 시작하지 못했습니다';
   h.style.cssText = 'font-size:22px;font-weight:600;color:#ff4a3d;';
   const d = document.createElement('div');
-  d.textContent = 'Something went wrong while setting up rendering. Reloading the page usually fixes it; if not, try a current version of Chrome with hardware acceleration turned on.';
+  d.textContent = '렌더링을 준비하는 중 문제가 생겼습니다. 새로고침하면 보통 해결됩니다. 그래도 안 되면 하드웨어 가속을 켠 최신 Chrome을 사용해 보세요.';
   d.style.cssText = 'max-width:520px;color:#a3a49b;';
   el.append(h, d);
   document.body.appendChild(el);
@@ -129,7 +129,7 @@ async function boot() {
     if (typeof G.fx.startEffects === 'function') G.fx.startEffects();
     while (!done) {
       const f = typeof G.fx.readyProgress === 'function' ? G.fx.readyProgress() : 0;
-      const label = typeof G.fx.readyLabel === 'function' ? G.fx.readyLabel() : 'Preparing effects';
+      const label = typeof G.fx.readyLabel === 'function' ? G.fx.readyLabel() : '효과 준비 중';
       setBoot(BUILD_SHARE + (MODULES_SHARE - BUILD_SHARE) * f, label);
       watch.status(label);
       await yieldToPage();
@@ -179,7 +179,7 @@ async function boot() {
       await yieldToPage();
     }
   } catch (e) { pushError(`[boot] autoSelect: ${e && e.message}`); }
-  setBoot(1, 'ready');
+  setBoot(1, '준비 완료');
   document.getElementById('boot')?.classList.add('done');
   window.__ready = true;
   watch.ready();
@@ -218,7 +218,7 @@ async function warmShaders(G, stage) {
     const s = await warm({
       onProgress: (w) => {
         watch.progress(w);
-        setBoot(MODULES_SHARE + (1 - MODULES_SHARE) * (w.total ? Math.min(1, w.ready / w.total) : 0), 'Preparing graphics');
+        setBoot(MODULES_SHARE + (1 - MODULES_SHARE) * (w.total ? Math.min(1, w.ready / w.total) : 0), '그래픽 준비 중');
       },
     });
     window.__warm = s;

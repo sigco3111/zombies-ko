@@ -160,19 +160,19 @@ export function createReportClient(api) {
 
 // ---------------------------------------------------------------- copy
 
-export const SENT_TEXT = 'Thanks — report sent.';
+export const SENT_TEXT = '감사합니다 — 신고가 접수되었습니다.';
 export function reportErrorText(r) {
   const e = r && r.error;
-  if (e === 'rate_limited') return 'You’ve sent a few already. Try again later.';
+  if (e === 'rate_limited') return '이미 여러 건을 보냈습니다. 나중에 다시 시도하세요.';
   if (e === 'invalid_report' || e === 'too_large') return fieldErrorText(r.reason || 'message_short');
-  return 'Couldn’t send it. Check your connection and try again.';
+  return '보내지 못했습니다. 연결을 확인하고 다시 시도하세요.';
 }
 export function fieldErrorText(reason) {
-  if (reason === 'message_short') return `Write at least ${MESSAGE_MIN} characters.`;
-  if (reason === 'message_long') return `Keep it under ${MESSAGE_MAX} characters.`;
-  if (reason === 'message_letters') return 'Describe it in a few words.';
-  if (reason === 'message_bytes' || reason === undefined) return 'That’s too long to send. Shorten it a little.';
-  if (reason === 'contact_long' || reason === 'contact_type') return `Keep this under ${CONTACT_MAX} characters.`;
-  if (reason === 'kind') return 'Pick Bug, Idea or Other.';
-  return 'Check the form and try again.';
+  if (reason === 'message_short') return `최소 ${MESSAGE_MIN}자 이상 써주세요.`;
+  if (reason === 'message_long') return `${MESSAGE_MAX}자 이하로 줄여주세요.`;
+  if (reason === 'message_letters') return '몇 마디로 설명해 주세요.';
+  if (reason === 'message_bytes' || reason === undefined) return '보내기에는 너무 깁니다. 조금 줄여주세요.';
+  if (reason === 'contact_long' || reason === 'contact_type') return `${CONTACT_MAX}자 이하로 줄여주세요.`;
+  if (reason === 'kind') return '버그, 아이디어, 기타 중 하나를 고르세요.';
+  return '양식을 확인하고 다시 시도하세요.';
 }

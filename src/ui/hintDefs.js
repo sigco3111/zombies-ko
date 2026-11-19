@@ -112,8 +112,8 @@ export function anyDoorOpen(G) {
   return false;
 }
 
-export const doorName = (d) => (/\b(door|gate)\b/i.test(d.label) ? d.label : `${d.label} door`);
-export const noun = (it) => String((it && it.label) || 'Search').replace(/^Search\s+/i, '') || 'car';
+export const doorName = (d) => d.label;
+export const noun = (it) => String((it && it.label) || '조사').replace(/\s*조사$/, '') || '자동차';
 
 // ---- copy parts: "Hold [F] to search" -> [{t:'Hold ', key:false}, {t:'F', key:true}, ...] -----------
 export function parseCopy(s) {
@@ -131,7 +131,7 @@ export function parseCopy(s) {
   return out;
 }
 // [@melee] is the melee button's own icon; read aloud it is "the melee button"
-export const plainCopy = (s) => String(s == null ? '' : s).replace(/\[@([^\]]+)\]/g, 'the $1 button').replace(/\[([^\]]+)\]/g, '$1');
+export const plainCopy = (s) => String(s == null ? '' : s).replace(/\[@([^\]]+)\]/g, '$1 버튼').replace(/\[([^\]]+)\]/g, '$1');
 
 // ---- the table --------------------------------------------------------------------------------
 const angDiff = (a, b) => { let d = a - b; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return Math.abs(d); };
@@ -151,7 +151,7 @@ export const HINTS = [
   {
     id: 'move', on: ['round:start'], priority: 100, seconds: 6,
     when: (G, ev) => !!ev && ev.n === 1,
-    text: { key: '[W][A][S][D] to move, mouse to look', touch: 'Left thumb moves, a tap there jumps. Drag the right side to look' },
+    text: { key: '[W][A][S][D]로 이동, 마우스로 시점', touch: '왼쪽 엄지로 이동, 거기를 탭하면 점프. 오른쪽을 드래그하면 시점' },
     until: (G, a) => {
       const p = playerPos(G);
       if (!p) return false;
@@ -180,23 +180,23 @@ export const HINTS = [
       }
       return false;
     },
-    text: { key: 'Click to shoot, right-click to aim', touch: 'Crosshair on them, tap [@fire] to shoot. Hold it with automatic guns' },
+    text: { key: '클릭으로 발사, 우클릭으로 조준', touch: '조준선을 맞추고 [@fire] 탭으로 발사. 자동 무기는 길게 누르세요' },
     until: (G, a, c) => c.hits > a.at.hits,
   },
   {
     id: 'points', on: ['points:add'], priority: 80, seconds: 8,
     when: (G, ev) => !!ev && ev.amount > 0,
-    text: { key: `Points: ${P.hit} a hit, ${P.kill} a kill, ${P.headshotKill} a headshot kill. Spend them at the wall` },
+    text: { key: `점수: 명중 ${P.hit}, 처치 ${P.kill}, 헤드샷 처치 ${P.headshotKill}. 벽에서 쓰세요` },
   },
   {
     id: 'rounds', on: ['round:start'], priority: 30, seconds: 7,
     when: (G, ev) => !!ev && ev.n === 2,
-    text: { key: 'The big number is the round. Each one brings more, and tougher' },
+    text: { key: '큰 숫자가 라운드입니다. 지날수록 더 많고 더 강해집니다' },
   },
   {
     id: 'sprint', on: ['round:start'], priority: 28,
     when: (G, ev) => !!ev && ev.n === 3,
-    text: { key: "Hold [Shift] to sprint — you can't shoot while sprinting", touch: 'Push the stick all the way to sprint' },
+    text: { key: '[Shift]를 누르면 달리기 — 달리는 동안은 쏠 수 없습니다', touch: '스틱을 끝까지 밀면 달립니다' },
     until: (G) => !!(G.input && G.input.sprint),
   },
   {
@@ -205,13 +205,13 @@ export const HINTS = [
       const a = G.weapon && G.weapon.ammo;
       return !!a && a.mag <= 3 && a.reserve > 0 && !G.weapon.reloading;
     },
-    text: { key: '[R] to reload', touch: 'Tap [@reload] to reload' },
+    text: { key: '[R]로 재장전', touch: '[@reload] 탭으로 재장전' },
     until: (G, a, c) => c.reloads > a.at.reloads,
   },
   {
     id: 'lowAmmo', on: ['weapon:low'], priority: 75, seconds: 8,
     when: (G, ev) => !!ev && ev.reserve > 0,
-    text: { key: 'Low on ammo. Buy more at the marked wall' },
+    text: { key: '탄약이 부족합니다. 표시된 벽에서 사세요' },
     until: (G, a, c) => c.buys > a.at.buys,
     target: ammoTarget,
   },
@@ -219,8 +219,8 @@ export const HINTS = [
     id: 'noAmmo', on: ['weapon:empty'], priority: 95, seconds: 14,
     when: (G) => slotsEmpty(G),
     text: {
-      key: (G) => `Out of ammo. Buy at the wall${G.weapon && G.weapon.melee ? ', or press [V] to knife them' : ''}`,
-      touch: (G) => `Out of ammo. Buy at the wall${G.weapon && G.weapon.melee ? ', or tap [@melee]' : ''}`,
+      key: (G) => `탄약이 없습니다. 벽에서 사세요${G.weapon && G.weapon.melee ? ', 또는 [V]로 칼을 휘두르세요' : ''}`,
+      touch: (G) => `탄약이 없습니다. 벽에서 사세요${G.weapon && G.weapon.melee ? ', 또는 [@melee] 탭' : ''}`,
     },
     until: (G, a, c) => c.buys > a.at.buys || !slotsEmpty(G),
     target: ammoTarget,
@@ -228,7 +228,7 @@ export const HINTS = [
   {
     id: 'wallBuy', on: 'tick', priority: 50,
     when: (G) => focusIs(G, 'wallAmmo', 'wallWeapon'),
-    text: { key: 'Press [F] to buy here', touch: 'Tap [BUY]' },
+    text: { key: '[F]를 눌러 여기서 구매', touch: '[구매] 탭' },
     until: (G, a, c) => c.buys > a.at.buys || !focusIs(G, 'wallAmmo', 'wallWeapon'),
   },
   {
@@ -237,7 +237,7 @@ export const HINTS = [
       const s = G.weapon && G.weapon.slots;
       return Array.isArray(s) && !!s[0] && !!s[1];
     },
-    text: { key: '[Q] or [1] / [2] switches guns', touch: 'Tap [@swap] to switch guns' },
+    text: { key: '[Q] 또는 [1] / [2]로 무기 교체', touch: '[@swap] 탭으로 무기 교체' },
     until: (G, a, c) => c.switches > a.at.switches,
   },
   {
@@ -251,7 +251,7 @@ export const HINTS = [
       }
       return false;
     },
-    text: { key: 'Too close? [V] swings your knife', touch: 'Too close? Tap [@melee]' },
+    text: { key: '너무 가깝나요? [V]로 칼을 휘두르세요', touch: '너무 가깝나요? [@melee] 탭' },
     until: (G, a, c) => c.swings > a.at.swings,
   },
   {
@@ -262,7 +262,7 @@ export const HINTS = [
       return !!d && G.game.points >= d.cost;
     },
     text: {
-      key: (G) => { const d = nextDoor(G); return d ? `You can afford the ${doorName(d)}: ${d.cost}` : 'You can afford a door'; },
+      key: (G) => { const d = nextDoor(G); return d ? `${doorName(d)}을(를) 살 수 있습니다: ${d.cost}` : '문을 살 수 있습니다'; },
     },
     until: (G, a, c) => c.opened > a.at.opened,
     target: (G) => pointOf(nextDoor(G)),
@@ -270,14 +270,14 @@ export const HINTS = [
   {
     id: 'power', on: ['door:open'], priority: 62, seconds: 8,
     when: (G) => !powerOn(G),
-    text: { key: 'The power is off. The switch is in the garage' },
+    text: { key: '전원이 꺼져 있습니다. 스위치는 차고에 있습니다' },
     until: (G, a, c) => c.powered > a.at.powered,
     target: (G) => (G.level && G.level.power && G.level.power.pos ? [px(G.level.power.pos), pz(G.level.power.pos)] : null),
   },
   {
     id: 'needsPower', on: 'tick', priority: 55,
     when: (G) => !powerOn(G) && focusIs(G, 'bench', 'machine'),
-    text: { key: 'No power yet. The switch is in the garage' },
+    text: { key: '아직 전원이 없습니다. 스위치는 차고에 있습니다' },
     until: (G, a, c) => c.powered > a.at.powered || !focusIs(G, 'bench', 'machine'),
     target: (G) => (G.level && G.level.power && G.level.power.pos ? [px(G.level.power.pos), pz(G.level.power.pos)] : null),
   },
@@ -288,35 +288,35 @@ export const HINTS = [
       const b = nearestOf(G, 'bench', 14);
       return !!b && G.game.points >= (b.cost || BENCH_COST);
     },
-    text: { key: `Upgrade bench: ${BENCH_COST}` },
+    text: { key: `업그레이드 작업대: ${BENCH_COST}` },
     until: (G, a, c) => c.upgrades > a.at.upgrades || c.buys > a.at.buys,
     target: (G) => pointOf(nearestOf(G, 'bench', 99)),
   },
   {
     id: 'box', on: 'tick', priority: 50,
     when: (G) => near(G, 'box', 8),
-    text: { key: `The weapon box: ${BOX_COST} for a random gun` },
+    text: { key: `무기 상자: 무작위 총 한 자루에 ${BOX_COST}` },
     until: (G, a, c) => c.rolls > a.at.rolls || !near(G, 'box', 12),
   },
   {
     id: 'search', on: 'tick', priority: 45, seconds: 7,
     when: (G) => near(G, 'search', 5),
     text: {
-      key: (G) => `Hold [F] to search the ${noun(nearestOf(G, 'search', 12)) || 'car'} — once only`,
-      touch: (G) => `Hold [SEARCH]. One search per ${noun(nearestOf(G, 'search', 12)) || 'car'}`,
+      key: (G) => `[F]를 길게 눌러 ${noun(nearestOf(G, 'search', 12)) || '자동차'} 조사 — 한 번만`,
+      touch: (G) => `[조사] 길게 누르기. ${noun(nearestOf(G, 'search', 12)) || '자동차'}당 한 번`,
     },
     until: (G, a, c) => c.searches > a.at.searches || !near(G, 'search', 8),
   },
   {
     id: 'powerup', on: ['powerup:drop'], priority: 66, seconds: 6,
     when: () => true,
-    text: { key: 'Walk over the glow to grab it' },
+    text: { key: '빛나는 곳을 밟아 가져가세요' },
     until: (G, a, c) => c.pups > a.at.pups,
   },
   {
     id: 'plates', on: ['armor:change'], priority: 35,
     when: (G, ev) => !!ev && ev.plates > 0,
-    text: { key: 'Armour plates soak damage before your health' },
+    text: { key: '방호판이 체력보다 먼저 피해를 흡수합니다' },
   },
   {
     id: 'throw', on: 'tick', priority: 35,
@@ -324,7 +324,7 @@ export const HINTS = [
       const t = G.weapon && G.weapon.throwables;
       return !!t && ((t.frag | 0) + (t.molotov | 0) + (t.decoy | 0)) > 0;
     },
-    text: { key: '[G] to throw, [3] to change', touch: 'Tap [@throw] to throw' },
+    text: { key: '[G]로 투척, [3]으로 변경', touch: '[@throw] 탭으로 투척' },
     until: (G, a, c) => c.throws > a.at.throws,
   },
   {
@@ -338,17 +338,17 @@ export const HINTS = [
       }
       return false;
     },
-    text: { key: 'Hold [F] at a broken window: 10 a board', touch: 'Hold [REPAIR] at a broken window: 10 a board' },
+    text: { key: '부서진 창문에서 [F] 길게 누르기: 판자 하나에 10', touch: '부서진 창문에서 [수리] 길게 누르기: 판자 하나에 10' },
     until: (G, a, c) => c.repairs > a.at.repairs,
   },
-  typeHint('runner', 'Runners: keep moving'),
-  typeHint('armoured', 'Armoured: shoot the head or the back'),
-  typeHint('bloater', 'Bloaters burst: kill them at range'),
-  typeHint('brute', 'Brute: huge health. Keep your distance, aim at the head', 88),
+  typeHint('runner', '달리는 좀비: 계속 움직이세요'),
+  typeHint('armoured', '무장 좀비: 머리나 등을 노리세요'),
+  typeHint('bloater', '부푼 좀비는 터집니다: 멀리서 처치하세요'),
+  typeHint('brute', '거구: 체력이 엄청납니다. 거리를 두고 머리를 노리세요', 88),
   {
     id: 'revive', on: ['revive'], priority: 92, seconds: 7,
     when: () => true,
-    text: { key: 'Jump Start saved you. Buy another' },
+    text: { key: '점프 스타트가 살려냈습니다. 하나 더 사두세요' },
   },
 ];
 

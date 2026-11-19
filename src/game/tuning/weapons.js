@@ -94,62 +94,62 @@ function def(id, name, cls, o, upName) {
 }
 
 const table = {
-  pistol: def('pistol', 'Wren 9', 'pistol', {
+  pistol: def('pistol', '렌 9', 'pistol', {
     mag: 12, reserve: 48, maxReserve: 96, damage: 40, rpm: 400, reload: 1.6, range: 60,
     wall: { cost: null, ammo: 250 }, box: 0,
-  }, 'Night Owl'),
-  revolver: def('revolver', 'Marlow .44', 'revolver', {
+  }, '밤올빼미'),
+  revolver: def('revolver', '말로 .44', 'revolver', {
     mag: 6, reserve: 36, maxReserve: 72, damage: 140, rpm: 150, reload: 2.4, reloadKind: 'cylinder', range: 70,
     box: 3,
-  }, 'Last Call'),
-  pump: def('pump', 'Hollis 12', 'shotgun', {
+  }, '라스트 콜'),
+  pump: def('pump', '홀리스 12', 'shotgun', {
     // 85 rpm (a balance choice): at 70 it only matched the pistol's damage per second
     mag: 6, reserve: 30, maxReserve: 54, damage: 28, pellets: 8, rpm: 85, reload: 0.55, reloadKind: 'shell',
     range: 22, falloff: [8, 22, 0.35], wall: { cost: 1000, ammo: 400 }, box: 2,
-  }, 'Deadfall'),
-  autoShotgun: def('autoShotgun', 'Brandt 12', 'shotgun', {
+  }, '데드폴'),
+  autoShotgun: def('autoShotgun', '브란트 12', 'shotgun', {
     mag: 8, reserve: 32, maxReserve: 64, damage: 24, pellets: 8, rpm: 220, reload: 0.45, shellStart: 0.5,
     reloadKind: 'shell', range: 20, falloff: [7, 20, 0.35], wall: { cost: 2000, ammo: 800 }, box: 3,
-  }, 'Squall'),
-  smg: def('smg', 'Pike 45', 'smg', {
+  }, '돌풍'),
+  smg: def('smg', '파이크 45', 'smg', {
     auto: true, mag: 30, reserve: 120, maxReserve: 240, damage: 32, rpm: 780, reload: 1.9, range: 40,
     moveScale: 1.0, wall: { cost: 1250, ammo: 500 }, box: 3,
-  }, 'Whiplash'),
-  rifle: def('rifle', 'Calder 556', 'rifle', {
+  }, '채찍'),
+  rifle: def('rifle', '콜더 556', 'rifle', {
     auto: true, mag: 30, reserve: 120, maxReserve: 240, damage: 48, rpm: 650, reload: 2.2, range: 80,
     wall: { cost: 1750, ammo: 700 }, box: 3,
-  }, 'Long Night'),
-  battleRifle: def('battleRifle', 'Ostrander 308', 'rifle', {
+  }, '긴 밤'),
+  battleRifle: def('battleRifle', '오스트랜더 308', 'rifle', {
     mag: 20, reserve: 80, maxReserve: 160, damage: 110, rpm: 320, reload: 2.5, range: 100, box: 3,
     penetration: { bodies: 5, keep: 0.85, reach: 12 }, // the heavy rifle: the deepest of all
     recoil: { pitchMin: 0.016, pitchMax: 0.024, yaw: 0.006, adsScale: 0.55, shake: 0.09, adsShake: 0.045 },
-  }, 'Iron Vigil'),
-  lmg: def('lmg', 'Dray 762', 'lmg', {
+  }, '철의 경계'),
+  lmg: def('lmg', '드레이 762', 'lmg', {
     auto: true, mag: 75, reserve: 150, maxReserve: 300, damage: 62, rpm: 560, reload: 4.6, reloadKind: 'belt',
     range: 80, moveScale: 0.9, box: 2,
-  }, 'Undertow'),
+  }, '역류'),
   // A truck battery booster with clamps: the first hit arcs on to `extra` more zombies, each within
   // `radius` of the one before, each taking `scale` x the weapon's damage. Box only.
-  jumper: def('jumper', 'The Jumper', 'special', {
+  jumper: def('jumper', '점퍼', 'special', {
     mag: 8, reserve: 24, maxReserve: 40, damage: 600, rpm: 60, reload: 2.8, reloadKind: 'cell', range: 25,
     box: 1, special: { kind: 'arc', extra: 4, radius: 5, scale: 0.6 },
-  }, 'Jump Lead'),
+  }, '점프선'),
   // A lobbed flare: flies at `speed` m/s, `angle` degrees above the aim, under `gravity` (light, so
   // the arc carries about `range` m before it has dropped a couple of metres), for at most `life` s.
   // It bursts on the first zombie or surface it meets: `damage` to a zombie it strikes, then a pool
   // of `radius` m burning `dps` for `seconds` where it burst. Box only.
-  flare: def('flare', 'Roadflare', 'special', {
+  flare: def('flare', '로드플레어', 'special', {
     mag: 1, reserve: 12, maxReserve: 20, damage: 200, rpm: 40, reload: 1.7, range: 45,
     box: 1,
     special: { kind: 'flare', speed: 45, angle: 2, gravity: 3, life: 4, radius: 3, seconds: 6, dps: 150, playerDps: 0 },
-  }, 'Signal Fire'),
+  }, '신호탄'),
 };
 
 // Melee: one swing every `time` s, hits up to `hits` zombies within `reach` (m, from the eye,
 // horizontally, to the zombie's surface) and inside `cone` (cosine of the half-angle) of the view.
 const melee = {
-  knife: { name: 'Knife', damage: 150, reach: 1.6, time: 0.7, hits: 1, cone: 0.6 },
-  axe: { name: 'Fire axe', damage: 600, reach: 1.9, time: 0.9, hits: 2, cone: 0.6 },
+  knife: { name: '나이프', damage: 150, reach: 1.6, time: 0.7, hits: 1, cone: 0.6 },
+  axe: { name: '소방 도끼', damage: 600, reach: 1.9, time: 0.9, hits: 2, cone: 0.6 },
 };
 
 // Throwables: thrown at `speed` m/s, `angle` degrees above the view; bounce and roll on the level.
@@ -161,12 +161,12 @@ const throwables = {
   kinds: ['frag', 'molotov', 'decoy'],
   // Centre damage max(damage, healthScale x walker health this round) (a balance choice:
   // throwables stay useful late), falling linearly to 0 at 5 m; the player takes `selfScale` of it.
-  frag: { name: 'Frag', carry: 3, fuse: 2.5, damage: 900, healthScale: 1.2, radius: 5, selfScale: 0.25 },
+  frag: { name: '수류탄', carry: 3, fuse: 2.5, damage: 900, healthScale: 1.2, radius: 5, selfScale: 0.25 },
   // Breaks on the first contact (level, ground or zombie) into a pool. Its total damage over the burn
   // is max(dps x seconds, healthScale x walker health this round) (a balance choice).
-  molotov: { name: 'Molotov', carry: 2, radius: 2.8, seconds: 8, dps: 120, healthScale: 1.0, playerDps: 15 },
+  molotov: { name: '화염병', carry: 2, radius: 2.8, seconds: 8, dps: 120, healthScale: 1.0, playerDps: 15 },
   // once it lands, draws every zombie within `lureRadius` for `seconds`, then bursts (flat damage)
-  decoy: { name: 'Decoy', carry: 2, lureRadius: 25, seconds: 8, burst: 300, burstRadius: 3 },
+  decoy: { name: '미끼', carry: 2, lureRadius: 25, seconds: 8, burst: 300, burstRadius: 3 },
 };
 
 // One of each per weapon, kept with the slot and lost with it.
